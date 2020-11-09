@@ -14,7 +14,7 @@ class Category(models.Model):
 class Article(models.Model):
     title = models.CharField(default="No information", max_length=50)
     content = models.TextField(default="No information")
-    authour = models.CharField(default="No information", max_length=50)
+    author = models.CharField(default="No information", max_length=50)
     date = models.DateField(default=timezone.now)
     category = models.OneToOneField(Category, on_delete=models.DO_NOTHING)
 
