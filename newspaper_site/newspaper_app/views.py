@@ -1,17 +1,36 @@
 from django.shortcuts import render
+from .models import *
+# -------------------import for user validation------------
 from .forms import ProfileForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
+# --------------------------Decorators and responses-------------------------
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse, HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
-# -----------------------------user's homepage-----------------------
+# -------------------------------Article/Home views-------------------------------------
+
+# Return all articles from database
 
 
-def index(request):
-    return render(request, "newspaper_app/base.html")
+def Articles_view(request):
+    Articles = Article.objects.all()
+    context = {"Articles": Articles}
+    return render(request, "newspaper_app/index.html", context)
+
+# Return an article with a POST request containing the id of the article
+
+
+@require_http_methods(["POST"])
+@csrf_exempt
+def Article_view(request):
+    article = get_object_or_404(Article, pk=request.POST['id'])
+    context = {"Article": article}
+    return render(request, "newspaper_app/index.html", context)
+
+
 # -----------------------------user's profile registration and login-----------------------
 # user's profile register and login validation
 
@@ -33,7 +52,7 @@ def register_validation(request):
         # Save user extra info
         profile.save()
         registration_form.save_m2m()
-        return redirect("user:base")
+        return redirect("user:index")
     else:
         return render(request, 'newspaper_app/register.html', context)
 
@@ -46,7 +65,7 @@ def login_validation(request):
     if(form.is_valid()):
         user = form.get_user()
         login(request, user)
-        return redirect("user:base")
+        return redirect("user:index")
     else:
         return render(request, 'newspaper_app/login.html', context)
 
@@ -70,4 +89,4 @@ def login_view(request):
 @require_http_methods(["POST"])
 def logout_view(request):
     logout(request)
-    return redirect("user:base")
+    return redirect("user:index")

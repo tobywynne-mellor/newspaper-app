@@ -3,7 +3,8 @@ from django.urls import path
 from . import views
 app_name = "user"
 urlpatterns = [
-    path("", views.index, name="base"),
+    path("", views.Articles_view, name="base"),
+    path("article/", views.Article_view, name="base"),
     path('register_validation/', views.register_validation,
          name="register_validation"),
     path('register/', views.register_view,
