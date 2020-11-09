@@ -52,7 +52,7 @@ def register_validation(request):
         # Save user extra info
         profile.save()
         registration_form.save_m2m()
-        return redirect("user:index")
+        return redirect("user:base")
     else:
         return render(request, 'newspaper_app/register.html', context)
 
@@ -65,7 +65,7 @@ def login_validation(request):
     if(form.is_valid()):
         user = form.get_user()
         login(request, user)
-        return redirect("user:index")
+        return redirect("user:base")
     else:
         return render(request, 'newspaper_app/login.html', context)
 
@@ -89,4 +89,4 @@ def login_view(request):
 @require_http_methods(["POST"])
 def logout_view(request):
     logout(request)
-    return redirect("user:index")
+    return redirect("user:base")
