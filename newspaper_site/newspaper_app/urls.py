@@ -4,7 +4,7 @@ from . import views
 app_name = "user"
 urlpatterns = [
     path("", views.Articles_view, name="base"),
-    path("article/", views.Article_view, name="base"),
+    path("article/", views.Article_view, name="article"),
     path('register_validation/', views.register_validation,
          name="register_validation"),
     path('register/', views.register_view,
