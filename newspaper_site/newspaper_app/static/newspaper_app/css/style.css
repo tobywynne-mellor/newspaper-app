@@ -3,15 +3,18 @@ root {
     font-size: 12;
 }
 
-body {
+/* ################################ GLOBAL OVERRIDES */
+html, body {
     background-color: #646C79;
+    font-family: 'Noto Sans', Arial, sans-serif;
 }
 
-.container {
+/* ################################ INDEX NAVBAR */
+.container, .badge.badge-custom {
     background-color: #1F3044 !important;
 }
 
-.text-style {
+.text-style, .card-subtitle {
     font-family: 'Bebas Neue', cursive;
     color: #646C79;
 }
@@ -29,4 +32,26 @@ body {
 
 .nav-item.btn:hover {
     filter: brightness(.8);
+}
+
+/* ################################ INDEX CARDS*/
+.card.stretched-link {
+    background-color: #fffafa;
+}
+
+.card-title {
+    font-family: 'Bebas Neue', cursive;
+    color: #1F3044 !important;
+}
+
+.badge.badge-custom {
+    color: #FB9039 !important;
+}
+
+a, a:hover {
+    color: inherit;
+}
+
+a:hover .card-title{
+    color: #FB9039 !important;
 }
