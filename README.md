@@ -11,7 +11,9 @@
 ## Populate Database
 
 ```bash
-    ./manage.py loaddata newspaper_data 
+# flush database before inserting to avoid errors    
+./manage.py flush
+./manage.py loaddata newspaper_data 
 ```
 
 ## Run Development Server
