@@ -1,0 +1,25 @@
+{% extends 'newspaper_app/base.html' %}
+<!-- Context is "article", having information about the requested article object -->
+{% block title %}Article{% endblock %}
+
+{% block content %}
+
+{% autoescape on %}
+<div>
+  <h1 class="card-title">
+    {{ article.title }}
+  </h1>
+  <h4 class="card-subtitle mb-2 text-muted">
+    By {{ article.author }} on {{ article.date|date:'D d M Y'}}
+  </h4>
+  <p> 
+  <span class="badge badge-dark">
+    {{ article.category }}
+  </span>
+  </p
+  <p>
+  {{ article.content|safe }}
+  </p>
+</div>
+{% endautoescape %}
+{% endblock %}
