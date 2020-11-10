@@ -19,10 +19,6 @@ html, body {
     color: #646C79;
 }
 
-.span-4 {
-    color: #FB9039;
-}
-
 .nav-item.btn {
     font-family: 'Bebas Neue', cursive;
     background-color: #FB9039 !important;
@@ -32,6 +28,15 @@ html, body {
 
 .nav-item.btn:hover {
     filter: brightness(.8);
+}
+
+/* ################################ HEADER OVERRIDES*/
+.span-4 {
+    color: #FB9039;
+}
+
+.fa-grin-wink {
+    color: #FB9039;
 }
 
 /* ################################ INDEX CARDS*/
