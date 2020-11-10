@@ -2,3 +2,31 @@
 root {
     font-size: 12;
 }
+
+body {
+    background-color: #646C79;
+}
+
+.container {
+    background-color: #1F3044 !important;
+}
+
+.text-style {
+    font-family: 'Bebas Neue', cursive;
+    color: #646C79;
+}
+
+.span-4 {
+    color: #FB9039;
+}
+
+.nav-item.btn {
+    font-family: 'Bebas Neue', cursive;
+    background-color: #FB9039 !important;
+    color: #1F3044;
+    border-radius: 0px 0px 10px 10px;
+}
+
+.nav-item.btn:hover {
+    filter: brightness(.8);
+}
