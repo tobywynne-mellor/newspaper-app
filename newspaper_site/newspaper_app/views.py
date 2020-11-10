@@ -23,12 +23,12 @@ def Articles_view(request):
 # Return an article with a POST request containing the id of the article
 
 
-@require_http_methods(["POST"])
+@require_http_methods(["GET"])
 @csrf_exempt
-def Article_view(request):
-    article = get_object_or_404(Article, pk=request.POST['id'])
-    context = {"Article": article}
-    return render(request, "newspaper_app/index.html", context)
+def Article_view(request, id):
+    article = get_object_or_404(Article, pk=id)
+    context = {"article": article}
+    return render(request, "newspaper_app/article.html", context)
 
 
 # -----------------------------user's profile registration and login-----------------------
