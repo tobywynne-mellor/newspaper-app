@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Profile, Category
+from .models import *
 
 
 class CategoryForm(forms.ModelForm):
@@ -14,3 +14,9 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ["pref_cate"]
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ["content"]

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+import datetime
 # Create your models here.
 
 
@@ -15,7 +16,7 @@ class Article(models.Model):
     title = models.CharField(max_length=50)
     content = models.TextField()
     author = models.CharField(max_length=50)
-    date = models.DateField(default=timezone.now)
+    date = models.DateField(default=datetime.date.today)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -28,3 +29,24 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class Like(models.Model):
+
+    article = models.ForeignKey(
+        Article, on_delete=models.CASCADE, unique=False)
+    user = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, unique=False)
+
+    def __str__(self):
+        return (self.user.user.username + " likes " + self.article.title)
+
+
+class Comment(Like):
+    content = models.TextField(default="", null=False)
+    date = models.DateField(default=datetime.date.today)
+    replyToComment = models.ForeignKey(
+        "self", related_name="reply", blank=True, null=True, unique=False, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return (self.content)

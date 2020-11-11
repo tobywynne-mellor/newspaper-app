@@ -4,6 +4,8 @@ from .models import *
 from .forms import ProfileForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
+# ---------------------------------Model serializers-------------------------
+from .serializers import *
 # --------------------------Decorators and responses-------------------------
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse, HttpResponse
@@ -27,10 +29,105 @@ def Articles_view(request):
 @csrf_exempt
 def Article_view(request, id):
     article = get_object_or_404(Article, pk=id)
+    # likes = Like.objects.filter(article=id)
+    # comments = Comment.objects.filter(article=id)
     context = {"article": article}
     return render(request, "newspaper_app/article.html", context)
 
+# -------------------------------Like views-------------------------------------
 
+# Message Decorator
+
+
+def message(function):
+    def new_function(request, *args, **kwargs):
+        message = {"success": True}
+        try:
+            function(request, *args, **kwargs)
+        except:
+            message = {"success": False}
+        return JsonResponse(message)
+    return new_function
+# GET
+
+
+@require_http_methods(["GET"])
+def Like_view(request, article_id):
+    like_set = Like.objects.filter(
+        article=get_object_or_404(Article, pk=article_id))
+    likes = LikeSerializer(like_set, many=True)
+    return JsonResponse(likes.data, safe=False)
+
+
+# Post
+# Required Formdata: {"user_id","article_id"}
+@require_http_methods(["POST"])
+@csrf_exempt
+@message
+def Like_post(request):
+    like_user = get_object_or_404(Profile, pk=int(request.POST['user_id']))
+    like_article = get_object_or_404(
+        Article, pk=int(request.POST['article_id']))
+    like = Like.objects.create(user=like_user, article=like_article)
+    like = LikeSerializer(like, many=False)
+
+# DELETE
+# Required Formdata : {"like_id"}
+
+
+@require_http_methods(["POST"])
+@csrf_exempt
+@message
+def Like_delete(request):
+    Like.objects.get(pk=int(request.POST['like_id'])).delete()
+
+
+# -------------------------------Comment views-------------------------------------
+@require_http_methods(["GET"])
+def Comment_view(request, article_id):
+    comment_set = Comment.objects.filter(
+        article=get_object_or_404(Article, pk=article_id))
+    comments = CommentSerializer(comment_set, many=True)
+    return JsonResponse(comments.data, safe=False)
+
+
+# Post
+# Required Formdata: {"user_id","article_id"}
+@require_http_methods(["POST"])
+@csrf_exempt
+def Comment_post(request):
+    comment_user = get_object_or_404(Profile, pk=int(request.POST['user_id']))
+    comment_article = get_object_or_404(
+        Article, pk=int(request.POST['article_id']))
+    comment_content = request.POST['content']
+    try:
+        comment_replyTo = Comment.objects.get(
+            pk=int(request.POST['replyToComment']))
+        comment = Comment.objects.create(
+            user=comment_user, article=comment_article, content=comment_content, replyToComment=comment_replyTo)
+    except:
+        comment = Comment.objects.create(
+            user=comment_user, article=comment_article, content=comment_content)
+    comment = CommentSerializer(comment, many=False)
+    return JsonResponse(comment.data, safe=False)
+
+# PUT
+# Required Formdata : {"like_id"}
+# @require_http_methods(["POST"])
+# @csrf_exempt
+# @message
+# def Comment_put(request):
+#     Like.objects.get(pk=int(request.POST['like_id'])).delete()
+
+# DELETE
+# Required Formdata : {"comment_id"}
+
+
+@require_http_methods(["POST"])
+@csrf_exempt
+@message
+def Comment_delete(request):
+    Comment.objects.get(pk=int(request.POST['comment_id'])).delete()
 # -----------------------------user's profile registration and login-----------------------
 # user's profile register and login validation
 
