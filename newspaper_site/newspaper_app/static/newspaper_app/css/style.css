@@ -4,7 +4,13 @@ root {
 }
 
 /* ################################ GLOBAL OVERRIDES */
-html, body {
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0;
     background-color: #646C79;
     font-family: 'Noto Sans', Arial, sans-serif;
 }
@@ -40,7 +46,7 @@ hr {
     color: #FB9039;
 }
 
-.fa-grin-wink {
+.fas {
     color: #FB9039;
 }
 

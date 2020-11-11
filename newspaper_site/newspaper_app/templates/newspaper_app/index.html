@@ -2,8 +2,17 @@
 <!-- Context is "Articles", having information about all article objects -->
 {% block title %}Home{% endblock %}
 
-{% block content %}
 
+<!-- Context for navbar -->
+{% block right-link %}<a class="nav-item btn" href="{% url 'newspaper_app:login_form' %}">Login</a>{% endblock %}
+
+<!-- Context for headings -->
+{% block first-half %}Fake{% endblock %}
+{% block second-half %}news{% endblock %}
+{% block icon %}<i class="fas fa-grin-wink fa-lg"></i>{% endblock %}
+{% block comment %}Sponsored by TrollFarm Inc.{% endblock %}
+
+{% block content %}
 {% autoescape on %}
 {% for article in Articles %}
 <a class="card stretched-link mt-3 text-decoration-none" data-article_id="{{article.id}}" href="{% url 'newspaper_app:article' article.id %}">

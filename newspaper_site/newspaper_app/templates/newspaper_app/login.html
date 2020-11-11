@@ -1,4 +1,28 @@
-<form method="POST" action="{% url 'newspaper_app:login_validation' %}">
-    {{form.as_p}}
-    <input type="submit" value = "Login">
-</form>
+{% extends 'newspaper_app/base.html' %}
+{% block title %}Login{% endblock %}
+
+<!-- Context for navbar -->
+{% block right-link %}<a class="nav-item btn" href="{% url 'newspaper_app:register_form' %}">Register</a>{% endblock %}
+
+<!-- Context for headings -->
+{% block first-half %}Log{% endblock %}
+{% block second-half %}in{% endblock %}
+{% block icon %}<i class="fas fa-sign-in fa-lg"></i>{% endblock %}
+{% block comment %}Hodor: "Hold the door!"{% endblock %}
+
+{% block content %}
+{% autoescape on %}
+
+<div class="row justify-content-center">
+    <div class="card w-50 mt-3">
+        <div class="card-body">
+            <form class="form" method="POST" action="{% url 'newspaper_app:login_validation' %}">
+                {{form.as_p}}
+                <input type="submit" value="Login">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endautoescape %}
+{% endblock %}
