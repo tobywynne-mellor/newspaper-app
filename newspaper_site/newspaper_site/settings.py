@@ -74,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'newspaper_site.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 
 # Database
