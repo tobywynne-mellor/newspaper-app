@@ -9,6 +9,11 @@ html, body {
     font-family: 'Noto Sans', Arial, sans-serif;
 }
 
+hr {
+    height: 1px;
+    background-color: #FB9039;
+}
+
 /* ################################ INDEX NAVBAR */
 .container, .badge.badge-custom {
     background-color: #1F3044 !important;
@@ -30,7 +35,7 @@ html, body {
     filter: brightness(.8);
 }
 
-/* ################################ HEADER OVERRIDES*/
+/* ################################ HEADING OVERRIDES*/
 .span-4 {
     color: #FB9039;
 }
@@ -40,7 +45,7 @@ html, body {
 }
 
 /* ################################ INDEX CARDS*/
-.card.stretched-link {
+.card.stretched-link, .card {
     background-color: #fffafa;
 }
 

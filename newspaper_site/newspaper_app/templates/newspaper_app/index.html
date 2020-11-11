@@ -8,15 +8,15 @@
 {% for article in Articles %}
 <a class="card stretched-link mt-3 text-decoration-none" data-article_id="{{article.id}}" href="{% url 'newspaper_app:article' article.id %}">
   <div class="card-body">
+    <p class="badge badge-custom p-2"> 
+      {{ article.category }}
+    </p>
     <div class="card-title">
       <h3>
         {{article.title}}
       </h3>
     </div>
-    <p class="badge badge-custom p-2"> 
-        {{ article.category }}
-    </p>
-    <p class="card-text">
+    <p>
       {{ article.content|striptags|truncatewords_html:64 }}
     </p>
     <h6 class="card-subtitle mb-2 text-muted small">
