@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from .models import *
+import json
+from django.http import QueryDict
 # -------------------import for user validation------------
 from .forms import ProfileForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -36,20 +38,7 @@ def Article_view(request, id):
 
 # -------------------------------Like views-------------------------------------
 
-# Message Decorator
-
-
-def message(function):
-    def new_function(request, *args, **kwargs):
-        message = {"success": True}
-        try:
-            function(request, *args, **kwargs)
-        except:
-            message = {"success": False}
-        return JsonResponse(message)
-    return new_function
 # GET
-
 
 @require_http_methods(["GET"])
 def Like_view(request, article_id):
@@ -63,23 +52,23 @@ def Like_view(request, article_id):
 # Required Formdata: {"user_id","article_id"}
 @require_http_methods(["POST"])
 @csrf_exempt
-@message
 def Like_post(request):
     like_user = get_object_or_404(Profile, pk=int(request.POST['user_id']))
     like_article = get_object_or_404(
         Article, pk=int(request.POST['article_id']))
     like = Like.objects.create(user=like_user, article=like_article)
     like = LikeSerializer(like, many=False)
+    return HttpResponse(status=200)
 
 # DELETE
 # Required Formdata : {"like_id"}
-
-
-@require_http_methods(["POST"])
+# i.e. /like_delete/2/
+@require_http_methods(["DELETE"])
 @csrf_exempt
-@message
-def Like_delete(request):
-    Like.objects.get(pk=int(request.POST['like_id'])).delete()
+def Like_delete(request, like_id):
+    like = get_object_or_404(Like, pk=like_id)
+    like.delete()
+    return JsonResponse({'message': 'Like: {} was deleted successfully.'.format(like_id)}, status=204)
 
 
 # -------------------------------Comment views-------------------------------------
@@ -92,42 +81,50 @@ def Comment_view(request, article_id):
 
 
 # Post
-# Required Formdata: {"user_id","article_id"}
+# Required Formdata: {"user_id","article_id", "content"}
 @require_http_methods(["POST"])
 @csrf_exempt
 def Comment_post(request):
     comment_user = get_object_or_404(Profile, pk=int(request.POST['user_id']))
-    comment_article = get_object_or_404(
-        Article, pk=int(request.POST['article_id']))
+    comment_article = get_object_or_404(Article, pk=int(request.POST['article_id']))
     comment_content = request.POST['content']
     try:
-        comment_replyTo = Comment.objects.get(
-            pk=int(request.POST['replyToComment']))
+        comment_replyTo = Comment.objects.get(pk=int(request.POST['replyToComment']))
         comment = Comment.objects.create(
-            user=comment_user, article=comment_article, content=comment_content, replyToComment=comment_replyTo)
+            user=comment_user, 
+            article=comment_article, 
+            content=comment_content, 
+            replyToComment=comment_replyTo
+        )
     except:
         comment = Comment.objects.create(
-            user=comment_user, article=comment_article, content=comment_content)
+                user=comment_user, article=comment_article, content=comment_content)
     comment = CommentSerializer(comment, many=False)
     return JsonResponse(comment.data, safe=False)
 
 # PUT
-# Required Formdata : {"like_id"}
-# @require_http_methods(["POST"])
-# @csrf_exempt
-# @message
-# def Comment_put(request):
-#     Like.objects.get(pk=int(request.POST['like_id'])).delete()
+# Required Formdata : {"comment_id", "content"}
+# TODO serialise form data if possible
+@require_http_methods(["PUT"])
+@csrf_exempt
+def Comment_put(request):
+    body = QueryDict(request.body) # in order to parse the PUT body
+    comment_id = int(body.get('comment_id'))
+    content = body.get('content')
+    comment = get_object_or_404(Comment, pk=comment_id)
+    comment.content = content
+    comment.save()
+    return HttpResponse(status=200)
 
 # DELETE
-# Required Formdata : {"comment_id"}
-
-
-@require_http_methods(["POST"])
+# i.e. /comment_delete/9/
+@require_http_methods(["DELETE"])
 @csrf_exempt
-@message
-def Comment_delete(request):
-    Comment.objects.get(pk=int(request.POST['comment_id'])).delete()
+def Comment_delete(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    comment.delete() 
+    return JsonResponse({'message': 'Comment: {} was deleted successfully.'.format(comment_id)}, status=204)
+
 # -----------------------------user's profile registration and login-----------------------
 # user's profile register and login validation
 
