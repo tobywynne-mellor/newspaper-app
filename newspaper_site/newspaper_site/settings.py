@@ -25,9 +25,7 @@ SECRET_KEY = '*c&&c=_g@2s9f@03q*@g99yk%c6d*ei@37-@&4uce!i1dy0_-q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-            '.apps.okd.eecs.qmul.ac.uk',
-        ]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -50,11 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'allow_cidr.middleware.AllowCIDRMiddleware',
 ]
-
-ALLOWED_CIDR_NETS = ['10.128.0.0/14']
 
 ROOT_URLCONF = 'newspaper_site.urls'
 
@@ -125,7 +119,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-
