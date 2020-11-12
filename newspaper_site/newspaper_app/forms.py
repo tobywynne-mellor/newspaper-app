@@ -13,7 +13,7 @@ class CategoryForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ["pref_cate"]
+        fields = ["pref_cate", "dob"]
 
 
 class CommentForm(forms.ModelForm):
