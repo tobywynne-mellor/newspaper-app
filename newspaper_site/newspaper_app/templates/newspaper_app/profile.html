@@ -1,0 +1,13 @@
+<!-- Context: Profile,Prefence -->
+<img src={{Profile.profile_pic.url}} />
+<p>DOB:{{Profile.dob}}</p>
+<p>Interest({{Preference.count}}):</p>
+<ul>
+    {% for pref in Preference.all %}
+        <li>
+            <p>
+                {{pref.name}}
+            </p>
+        </li>
+    {% endfor %}
+</ul>

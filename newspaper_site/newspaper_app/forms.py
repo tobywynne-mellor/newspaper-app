@@ -11,9 +11,12 @@ class CategoryForm(forms.ModelForm):
 
 
 class ProfileForm(forms.ModelForm):
+    pref_cate = forms.ModelMultipleChoiceField(
+        queryset=Category.objects.all(), widget=forms.CheckboxSelectMultiple, required=False)
+
     class Meta:
         model = Profile
-        fields = ["pref_cate", "dob"]
+        fields = ["profile_pic", "pref_cate", "dob"]
 
 
 class CommentForm(forms.ModelForm):

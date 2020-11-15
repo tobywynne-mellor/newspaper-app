@@ -4,6 +4,8 @@ from . import views
 app_name = "newspaper_app"
 urlpatterns = [
     path("", views.Articles_view, name="index"),
+    path("profile/", views.Profile_initial_render, name="profile"),
+    path("profile_view/", views.Profile_view, name="profile_view"),
     path("article/<int:id>/", views.Article_view, name="article"),
     path("like_view/<int:article_id>/", views.Like_view, name="like_view"),
     path("like_delete/<int:like_id>/", views.Like_delete, name="like_delete"),
@@ -12,7 +14,8 @@ urlpatterns = [
          views.Comment_view, name="comment_view"),
     path("comment_post/", views.Comment_post, name="comment_post"),
     path("comment_edit/", views.Comment_put, name="comment_edit"),
-    path("comment_delete/<int:comment_id>/", views.Comment_delete, name="comment_delete"),
+    path("comment_delete/<int:comment_id>/",
+         views.Comment_delete, name="comment_delete"),
     path('register_validation/', views.register_validation,
          name="register_validation"),
     path('register/', views.register_view, name="register_form"),

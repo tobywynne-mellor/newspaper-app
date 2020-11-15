@@ -17,18 +17,53 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
-# ----------------------------User login required----------------------
+# ----------------------------Profile----------------------
+# Initial render view
+
+
+@login_required(login_url="newspaper_app:login_form")
+def Profile_initial_render(request):
+    # ------------------Get the user-----------------------
+    current_user = User.objects.get(pk=request.user.id)
+    # ------------------Get the user's profile-----------------------
+    profile = get_object_or_404(Profile, user=current_user)
+    preferences = profile.pref_cate
+    context = {"Profile": profile, "Preference": preferences}
+    return render(request, "newspaper_app/profile.html", context)
+
+# GET
+
+
+@login_required(login_url="newspaper_app:login_form")
+def Profile_view(request):
+    # ------------------Get the user-----------------------
+    current_user = User.objects.get(pk=request.user.id)
+    # ------------------Get the user's profile-----------------------
+    profile_set = get_object_or_404(Profile, user=current_user)
+    profile = ProfileSerializer(profile_set)
+    return JsonResponse(profile.data, safe=False)
+# PUT
+
+# @login_required(login_url="newspaper_app:login_form")
+# def Profile_put(request):
+#     body = QueryDict(request.body)  # in order to parse the PUT body
+#     # ------------------Get the user-----------------------
+#     current_user = User.objects.get(pk=request.user.id)
+#     # ------------------Get the user's profile-----------------------
+#     profile_set = get_object_or_404(Profile, user=current_user)
 
 
 # -------------------------------Article/Home views-------------------------------------
 
 # Return all articles from database
+
+
 def Articles_view(request):
     if(request.user.is_authenticated):
         # ------------------Get the user-----------------------
         current_user = User.objects.get(pk=request.user.id)
         # ------------------Get the user's profile-----------------------
-        profile = Profile.objects.get(user=current_user)
+        profile = get_object_or_404(Profile, user=current_user)
         # ------------------Get the profile's preference-----------------------
         preferences = profile.pref_cate
         Articles = Article.objects.filter(
@@ -170,7 +205,7 @@ def Comment_delete(request, comment_id):
 @csrf_exempt
 def register_validation(request):
     form = UserCreationForm(request.POST)
-    registration_form = ProfileForm(request.POST)
+    registration_form = ProfileForm(request.POST, request.FILES)
     context = {"form": form, "registration_form": registration_form}
     if(form.is_valid() and registration_form.is_valid()):
         context = {"message": True}
@@ -183,7 +218,7 @@ def register_validation(request):
         # Save user extra info
         profile.save()
         registration_form.save_m2m()
-        return redirect("newspaper_app:index")
+        return redirect("newspaper_app:profile")
     else:
         return render(request, 'newspaper_app/register.html', context)
 
