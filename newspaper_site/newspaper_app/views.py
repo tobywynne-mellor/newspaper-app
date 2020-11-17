@@ -252,7 +252,7 @@ def login_view(request):
     return render(request, 'newspaper_app/login.html', context)
 
 
-@require_http_methods(["POST"])
+@require_http_methods(["GET"])
 def logout_view(request):
     logout(request)
-    return redirect("user:index")
+    return redirect("newspaper_app:index")
