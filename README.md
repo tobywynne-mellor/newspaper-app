@@ -13,6 +13,7 @@
 ```bash
 # flush database before inserting to avoid errors    
 ./manage.py flush
+./manage.py migrate
 ./manage.py loaddata newspaper_data 
 ```
 
