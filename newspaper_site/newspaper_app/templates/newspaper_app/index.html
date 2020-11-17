@@ -2,22 +2,6 @@
 <!-- Context is "Articles", having information about all article objects -->
 {% block title %}Home{% endblock %}
 
-
-<!-- Context for navbar -->
-{% block right-link %}
-    {% if user.is_authenticated %} 
-        <span>
-        <a class="nav-item btn" href="{% url 'newspaper_app:profile' %}">Profile</a>
-        <a class="nav-item btn" href="{% url 'newspaper_app:logout' %}">Logout</a>
-        </span>
-    {% else %}
-        <span>
-        <a class="nav-item btn" href="{% url 'newspaper_app:login_form' %}">Login</a>
-        <a class="nav-item btn" href="{% url 'newspaper_app:register_form' %}">Register</a>
-        </span>
-    {% endif %}
-{% endblock %}
-
 <!-- Context for headings -->
 {% block first-half %}Fake{% endblock %}
 {% block second-half %}news{% endblock %}

@@ -13,6 +13,7 @@ class CategoryForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     pref_cate = forms.ModelMultipleChoiceField(
         queryset=Category.objects.all(), widget=forms.CheckboxSelectMultiple, required=False)
+    profile_pic = forms.ImageField(required=False)
 
     class Meta:
         model = Profile

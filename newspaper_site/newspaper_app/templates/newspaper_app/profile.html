@@ -1,5 +1,9 @@
 <!-- Context: Profile,Prefence -->
+{% if Profile.profile_pic %}
 <img src={{Profile.profile_pic.url}} />
+{% else %}
+PLACEHOLDER IMAGE
+{% endif %}
 <p>DOB:{{Profile.dob}}</p>
 <p>Interest({{Preference.count}}):</p>
 <ul>
