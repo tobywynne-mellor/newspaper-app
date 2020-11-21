@@ -21,26 +21,21 @@
 </head>
 
 <body>
-    <div class="container pb-3">
-        <nav class="nav justify-content-between">
-            <a class="nav-item btn" href="{% url 'newspaper_app:index' %}">Home</a>
+    <div class="container pb-3 min-vh-100">
+        <nav class="nav d-flex">
+            <a class="nav-item btn mr-1" href="{% url 'newspaper_app:index' %}">Home</a>
             {% if user.is_authenticated %} 
-                <span>
-                <a class="nav-item btn" href="{% url 'newspaper_app:profile' %}">Profile</a>
-                <a class="nav-item btn" href="{% url 'newspaper_app:logout' %}">Logout</a>
-                </span>
+                <a class="nav-item btn " href="{% url 'newspaper_app:profile' %}">Profile</a>
+                <a class="nav-item btn ml-auto" href="{% url 'newspaper_app:logout' %}">Logout</a>
             {% else %}
-                <span>
-                <a class="nav-item btn" href="{% url 'newspaper_app:login_form' %}">Login</a>
-                <a class="nav-item btn" href="{% url 'newspaper_app:register_form' %}">Register</a>
-                </span>
+                <a class="nav-item btn ml-auto" href="{% url 'newspaper_app:login_form' %}">Login</a>
             {% endif %}
         </nav>
 
         <div class="row justify-content-center">
-            <div class="col-3 disabled"></div>
+            <div class="col-3 p-1 disabled"></div>
             <div class="text-center">
-                <h1 class="display-4 text-style"><span class="span-4">{% block first-half %}{% endblock %}</span>{% block second-half %}{% endblock %}</h1>
+                <h1 class="display-4 text-style"><span class="span-left">{% block first-half %}{% endblock %}</span>{% block second-half %}{% endblock %}</h1>
             </div>
             <div class="col-3 p-1">
                 {% block icon %}{% endblock %}

@@ -1,17 +1,116 @@
+{% extends 'newspaper_app/base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+<!-- Context for headings -->
+{% block first-half %}Pro{% endblock %}
+{% block second-half %}file{% endblock %}
+{% block icon %}<i class="fas fa-flushed fa-lg"></i>{% endblock %}
+{% block comment %}Smile... You're on a webcam!{% endblock %}
+
+{% block content %}
+{% autoescape on %}
+
 <!-- Context: Profile,Prefence -->
-{% if Profile.profile_pic %}
-<img src={{Profile.profile_pic.url}} />
-{% else %}
-PLACEHOLDER IMAGE
-{% endif %}
-<p>DOB:{{Profile.dob}}</p>
-<p>Interest({{Preference.count}}):</p>
-<ul>
-    {% for pref in Preference.all %}
-        <li>
-            <p>
-                {{pref.name}}
-            </p>
-        </li>
-    {% endfor %}
-</ul>
+
+<div class="row justify-content-center">
+    <div class="card mt-3">
+        <div class="card-body">
+
+            <div class="col p-0 bg-picture rounded pt-4">
+                <div class="row justify-content-center m-0">
+                    {% if Profile.profile_pic %}
+                        <img src={{Profile.profile_pic.url}} class="img-thumbnail img-custom w-50"/>
+                    {% else %}
+                        PLACEHOLDER IMAGE
+                    {% endif %}
+                </div>
+                
+                <div class="row justify-content-center m-0 pb-2">
+                    <div class="btn-group mt-2" role="group">
+                        <button title="Change" class="btn btn-dark bg-pic-btn">
+                            <i class="fas fa-pen-square fa-sm"></i>
+                        </button>
+                        <button title="Delete" class="btn btn-dark bg-pic-btn">
+                            <i class="fas fa-trash fa-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col p-0 mt-5">
+
+                <div class="row m-0">
+                    <div class="col p-0">
+                        <div class="row m-0">
+                            <div class="col-2 p-0">
+                                <button title="Change" class="btn btn-sm btn-dark bg-pic-btn">
+                                    <i class="fas fa-pen-square fa-sm"></i>
+                                </button>
+                            </div>
+
+                            <div class="col p-0">
+                                <h4 class="card-title text-right">Date of birth:&nbsp</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col p-0">
+                        <h6 class="card-title">{{Profile.dob}}</h6>
+                    </div>
+                </div>
+                <!-- #### -->
+
+                <div class="row m-0">
+                    <div class="col p-0">
+                        <div class="row m-0">
+                            <div class="col-2 p-0">
+                                <button title="Change" class="btn btn-sm btn-dark bg-pic-btn">
+                                    <i class="fas fa-pen-square fa-sm"></i>
+                                </button>
+                            </div>
+
+                            <div class="col p-0">
+                                <h4 class="card-title text-right">Email:&nbsp</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col p-0">
+                        <h6 class="card-title">placeholder@placeholder.com</h6>
+                    </div>
+                </div>
+                <!-- #### -->
+                
+                <div class="row m-0">
+                    <div class="col p-0">
+                        <div class="row m-0">
+                            <div class="col-2 p-0">
+                                <button title="Change" class="btn btn-sm btn-dark bg-pic-btn">
+                                    <i class="fas fa-pen-square fa-sm"></i>
+                                </button>
+                            </div>
+
+                            <div class="col p-0">
+                                <h4 class="card-title text-right">Interests (<span class="span-left">{{Preference.count}}</span>):&nbsp</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col p-0">
+                        {% for pref in Preference.all %}
+                            <div class="row m-0">
+                                <h6 class="badge badge-custom p-2">{{pref.name}}</h6>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- #### -->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endautoescape %}
+{% endblock %}

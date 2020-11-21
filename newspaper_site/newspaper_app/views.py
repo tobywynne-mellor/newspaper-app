@@ -44,13 +44,13 @@ def Profile_view(request):
     return JsonResponse(profile.data, safe=False)
 # PUT
 
-# @login_required(login_url="newspaper_app:login_form")
-# def Profile_put(request):
-#     body = QueryDict(request.body)  # in order to parse the PUT body
-#     # ------------------Get the user-----------------------
-#     current_user = User.objects.get(pk=request.user.id)
-#     # ------------------Get the user's profile-----------------------
-#     profile_set = get_object_or_404(Profile, user=current_user)
+@login_required(login_url="newspaper_app:login_form")
+def Profile_put(request):
+    body = QueryDict(request.body)  # in order to parse the PUT body
+    # ------------------Get the user-----------------------
+    current_user = User.objects.get(pk=request.user.id)
+    # ------------------Get the user's profile-----------------------
+    profile_set = get_object_or_404(Profile, user=current_user)
 
 
 # -------------------------------Article/Home views-------------------------------------
