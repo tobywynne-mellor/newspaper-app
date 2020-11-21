@@ -36,23 +36,23 @@ hr {
     background-color: #1F3044 !important;
 }
 
-/* .container {
-    min-height: 100vh;
-} */
-
 .text-style, .card-subtitle {
     font-family: 'Bebas Neue', cursive;
     color: #646C79;
 }
 
-.nav-item.btn {
+.nav-item.btn, .btn-submit {
     font-family: 'Bebas Neue', cursive;
     background-color: #FB9039 !important;
-    color: #1F3044;
+    color: #1F3044 !important;
     border-radius: 0px 0px 10px 10px;
 }
 
-.nav-item.btn:hover, .bg-pic-btn:hover {
+.btn-submit {
+    border-radius: 10px 10px 0px 0px !important;
+}
+
+.nav-item.btn:hover, .bg-pic-btn:hover, .btn-submit:hover {
     filter: brightness(.8);
 }
 
@@ -103,4 +103,16 @@ a:hover .card-title{
 
 .fa-pen-square, .fa-trash {
     color: #1F3044;
+}
+
+/* ################################ LOGIN OVERRIDES*/
+.form-override>p>label {
+    font-family: 'Bebas Neue', cursive;
+    color: #1F3044 !important;
+}
+
+.form-control:focus {
+    border: solid 2px !important;
+    border-color: #FB9039 !important;
+    box-shadow: none !important;
 }

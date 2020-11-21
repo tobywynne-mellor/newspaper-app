@@ -248,6 +248,11 @@ def register_view(request):
 @require_http_methods(["GET"])
 def login_view(request):
     form = AuthenticationForm()
+
+
+    form.fields['username'].widget.attrs['class'] = "form-control"
+    form.fields['password'].widget.attrs['class'] = "form-control"
+
     context = {"form": form}
     return render(request, 'newspaper_app/login.html', context)
 

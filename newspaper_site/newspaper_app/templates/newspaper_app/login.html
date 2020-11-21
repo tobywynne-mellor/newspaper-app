@@ -2,7 +2,7 @@
 {% block title %}Login{% endblock %}
 
 <!-- Context for navbar -->
-{% block right-link %}<a class="nav-item btn" href="{% url 'newspaper_app:register_form' %}">Register</a>{% endblock %}
+{% block right-link %}<a class="nav-item btn btn-dark ml-auto" href="{% url 'newspaper_app:register_form' %}">Register</a>{% endblock %}
 
 <!-- Context for headings -->
 {% block first-half %}Log{% endblock %}
@@ -15,12 +15,17 @@
 
 <div class="row justify-content-center">
     <div class="card w-50 mt-3">
-        <div class="card-body">
-            <form class="form" method="POST" action="{% url 'newspaper_app:login_validation' %}">
-                {{form.as_p}}
-                <input type="submit" value="Login">
-            </form>
+
+        <div class="card-body pb-0">
+                <form class="form form-override" method="POST" action="{% url 'newspaper_app:login_validation' %}">
+                    {{form.as_p}}
+                    <input type="submit" value="Login" class="btn btn-dark btn-submit">
+                </form>
         </div>
+        <div class="card-footer">
+            <div class="text-muted small text-center">No account? Click Register on top right corner.</div>
+        </div>
+
     </div>
 </div>
 
