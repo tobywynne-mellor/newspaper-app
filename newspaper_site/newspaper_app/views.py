@@ -227,6 +227,10 @@ def register_validation(request):
 @csrf_exempt
 def login_validation(request):
     form = AuthenticationForm(data=request.POST)
+
+    form.fields['username'].widget.attrs['class'] = "form-control"
+    form.fields['password'].widget.attrs['class'] = "form-control"
+
     context = {"form": form}
     if(form.is_valid()):
         user = form.get_user()
@@ -240,6 +244,9 @@ def login_validation(request):
 @require_http_methods(["GET"])
 def register_view(request):
     form = UserCreationForm()
+
+    
+
     registration_form = ProfileForm()
     context = {"form": form, "registration_form": registration_form}
     return render(request, 'newspaper_app/register.html', context)
@@ -248,7 +255,6 @@ def register_view(request):
 @require_http_methods(["GET"])
 def login_view(request):
     form = AuthenticationForm()
-
 
     form.fields['username'].widget.attrs['class'] = "form-control"
     form.fields['password'].widget.attrs['class'] = "form-control"

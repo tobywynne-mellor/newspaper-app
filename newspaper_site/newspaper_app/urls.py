@@ -17,10 +17,13 @@ urlpatterns = [
     path("comment_edit/", views.Comment_put, name="comment_edit"),
     path("comment_delete/<int:comment_id>/",
          views.Comment_delete, name="comment_delete"),
+
     path('register_validation/', views.register_validation,
          name="register_validation"),
     path('register/', views.register_view, name="register_form"),
+
     path('login_validation/', views.login_validation, name="login_validation"),
     path('login/', views.login_view, name="login_form"),
+    
     path('logout/', views.logout_view, name="logout")
 ]

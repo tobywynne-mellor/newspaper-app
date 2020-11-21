@@ -13,8 +13,9 @@
 {% block content %}
 {% autoescape on %}
 
-<div class="row justify-content-center mt-3">
-    <div class="card w-50">
+<div class="row justify-content-center">
+    <div class="card w-50 mt-3">
+
         <div class="card-body">
             <form enctype="multipart/form-data" method="POST" action="{% url 'newspaper_app:register_validation' %}">
                 {{form.as_p}}
@@ -22,6 +23,7 @@
                 <input type="submit" value = "Register">
             </form>
         </div>
+        
     </div>
 </div>
 
