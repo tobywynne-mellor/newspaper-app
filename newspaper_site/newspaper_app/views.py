@@ -10,6 +10,8 @@ from django.contrib.auth.models import User
 
 # ---------------------------------Model serializers-------------------------
 from .serializers import *
+# ------------------------------Import for sending emails----------------------
+from django.core.mail import send_mail
 # --------------------------Decorators and responses-------------------------
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
@@ -43,6 +45,7 @@ def Profile_view(request):
     profile = ProfileSerializer(profile_set)
     return JsonResponse(profile.data, safe=False)
 # PUT
+
 
 @login_required(login_url="newspaper_app:login_form")
 def Profile_put(request):
@@ -218,6 +221,15 @@ def register_validation(request):
         # Save user extra info
         profile.save()
         registration_form.save_m2m()
+        # ---------------------------------------Welcome email view-----------------------------
+        print(profile.email)
+        send_mail(
+            'Welcome to FakeNews',
+            'Only the truth for you.',
+            'bestfakenews3010@gmail.com',
+            [str(profile.email)],
+            fail_silently=False,
+        )
         return redirect("newspaper_app:profile")
     else:
         return render(request, 'newspaper_app/register.html', context)
@@ -244,8 +256,6 @@ def login_validation(request):
 @require_http_methods(["GET"])
 def register_view(request):
     form = UserCreationForm()
-
-    
 
     registration_form = ProfileForm()
     context = {"form": form, "registration_form": registration_form}

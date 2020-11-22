@@ -5,7 +5,7 @@ from .models import *
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ["profile_pic", "pref_cate", "dob"]
+        fields = ["profile_pic", "email", "pref_cate", "dob"]
 
 
 class LikeSerializer(serializers.ModelSerializer):

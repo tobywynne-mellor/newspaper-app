@@ -117,8 +117,17 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
+# ------------------------------MEDIA SETUP-----------------------------------------
 STATIC_URL = '/static/'
 MEDIA_URL = '/images/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+
+
+# ------------------------------HOST EMAIL SETUP------------------------------------
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'bestfakenews3010@gmail.com'
+EMAIL_HOST_PASSWORD = "fakenews1234"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587

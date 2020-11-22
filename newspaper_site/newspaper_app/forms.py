@@ -17,7 +17,7 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ["profile_pic", "pref_cate", "dob"]
+        fields = ["profile_pic", "email", "dob", "pref_cate"]
 
 
 class CommentForm(forms.ModelForm):

@@ -28,7 +28,7 @@ class Profile(models.Model):
     profile_pic = models.ImageField(blank=True, null=True)
     pref_cate = models.ManyToManyField(Category)
     dob = models.DateField(default=datetime.date.today, max_length=8)
-    # email = models.EmailField() 
+    email = models.EmailField(max_length=254)
 
     def __str__(self):
         return self.user.username
