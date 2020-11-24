@@ -16,7 +16,7 @@
 <div class="card mt-3">
   <div class="card-body">
     <p class="badge badge-custom p-2"> 
-      {{ article.category }}
+    {{ article.category }}
     </p>
     <div class="card-title">
       <h1>
@@ -33,4 +33,81 @@
   </div>
 </div>
 {% endautoescape %}
+<div id="comments-container"></div>
+
+<script>
+
+
+  $('#comments-container').comments({
+      readOnly: "{{user.is_authenticated}}" === "True" ? false : true,
+      roundProfilePictures: true,
+      enable_deleting_comment_with_replies: false,
+      currentUserIsAdmin: "{{user.is_staff}}" == "True" ? true : false,
+      deleteComment: function(commentJSON, success, error) {
+          $.ajax({
+              type: 'DELETE',
+              url: '/comment_delete/' + commentJSON.id + "/",
+              success: success,
+              error: error
+          });
+      },
+      putComment: function(commentJSON, success, error) {
+          let putData = {};
+          putData['comment_id'] = commentJSON.id;
+          putData['content'] = commentJSON.content;
+          
+          $.ajax({
+              type: 'PUT',
+              url: '/comment_edit/',
+              data: putData,
+              success: function(comment) {
+                  success(commentJSON)
+                },
+              error: error
+            });
+        },
+      postComment: function(commentJSON, success, error) {
+          let commentData = {
+              article_id: {{article.id}},
+              content: commentJSON.content,
+              replyToComment: commentJSON.parent
+            };
+
+          $.post("/comment_post/", commentData, function(data) {
+              commentJSON.id = data.id;
+              commentJSON.profile_picture_url = data.profile_pic;
+              success(commentJSON);
+              console.log(commentJSON);
+            }); 
+        },
+      getComments: function(success, error) {
+          $.get("/comment_view/{{article.id}}/", function(data) {
+              var commentsArray = [];
+              console.log(data);
+              data.forEach(function(comment) {
+                  commentsArray.push({
+                      id: comment.id,
+                      parent: comment.replyToComment,
+                      created: comment.date,
+                      modified: comment.date,
+                      content: comment.content,
+                      fullname: "{{user.username}}" === comment.username ? "You" : comment.username, 
+                      profile_picture_url: comment.profile_pic ? comment.profile_pic : null,
+                      created_by_current_user: "{{user.username}}" === comment.username ? true : false,
+                      creator: comment.user,
+                      upvoteCount: 0,
+                      pings: {},
+                      user_has_upvoted: false,
+                      attachments: []
+                    }) 
+                })
+              console.log(commentsArray);
+              success(commentsArray);
+            });
+        },
+      enableUpvoting: false
+    });
+
+</script>
+
 {% endblock %}

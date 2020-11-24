@@ -137,22 +137,32 @@ def Like_delete(request, like_id):
 
 
 # -------------------------------Comment views-------------------------------------
+#@login_required(login_url="newspaper_app:login_form")
 @require_http_methods(["GET"])
-@login_required(login_url="newspaper_app:login_form")
 def Comment_view(request, article_id):
     comment_set = Comment.objects.filter(
         article=get_object_or_404(Article, pk=article_id))
     comments = CommentSerializer(comment_set, many=True)
-    return JsonResponse(comments.data, safe=False)
+    data = comments.data
+    for d in data:
+        profile = Profile.objects.get(pk=d.get("user"))
+        d['username'] = profile.user.username
+        if profile.profile_pic:
+            d['profile_pic'] = profile.profile_pic.url
+    return JsonResponse(data, safe=False)
 
 
 # Post
 # Required Formdata: {"user_id","article_id", "content"}
 @require_http_methods(["POST"])
-@csrf_exempt
 @login_required(login_url="newspaper_app:login_form")
+@csrf_exempt
 def Comment_post(request):
-    comment_user = get_object_or_404(Profile, pk=int(request.POST['user_id']))
+    # ------------------Get the user-----------------------
+    current_user = User.objects.get(pk=request.user.id)
+
+    profile = get_object_or_404(Profile, user=current_user)
+
     comment_article = get_object_or_404(
         Article, pk=int(request.POST['article_id']))
     comment_content = request.POST['content']
@@ -160,16 +170,21 @@ def Comment_post(request):
         comment_replyTo = Comment.objects.get(
             pk=int(request.POST['replyToComment']))
         comment = Comment.objects.create(
-            user=comment_user,
+            user=profile,
             article=comment_article,
             content=comment_content,
             replyToComment=comment_replyTo
         )
     except:
         comment = Comment.objects.create(
-            user=comment_user, article=comment_article, content=comment_content)
+            user=profile, article=comment_article, content=comment_content)
     comment = CommentSerializer(comment, many=False)
-    return JsonResponse(comment.data, safe=False)
+    data = comment.data
+    profile = Profile.objects.get(pk=data.get("user"))
+    data['username'] = profile.user.username
+    if profile.profile_pic:
+        data['profile_pic'] = profile.profile_pic.url
+    return JsonResponse(data, safe=False)
 
 # PUT
 # Required Formdata : {"comment_id", "content"}
@@ -186,7 +201,7 @@ def Comment_put(request):
     comment = get_object_or_404(Comment, pk=comment_id)
     comment.content = content
     comment.save()
-    return HttpResponse(status=200)
+    return HttpResponse("comment changed to '"+content+"'", status=200)
 
 # DELETE
 # i.e. /comment_delete/9/

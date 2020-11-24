@@ -123,3 +123,11 @@ a:hover .card-title{
     padding: 0;
     font-size: x-small;
 }
+
+/* Article Comments */
+#comments-container {
+    background: white;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 12px 0px;
+}
