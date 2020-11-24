@@ -3,7 +3,7 @@ from .models import *
 import json
 from django.http import QueryDict
 # -------------------import for user validation------------
-from .forms import ProfileForm
+from .forms import ProfileForm, ProfileUpdateForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
@@ -24,19 +24,24 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 @login_required(login_url="newspaper_app:login_form")
+@require_http_methods(["GET"])
 def Profile_initial_render(request):
     # ------------------Get the user-----------------------
     current_user = User.objects.get(pk=request.user.id)
     # ------------------Get the user's profile-----------------------
     profile = get_object_or_404(Profile, user=current_user)
+    # ----------------------Get all preference in db------------------------
+    available_cate = Category.objects.all()
     preferences = profile.pref_cate
-    context = {"Profile": profile, "Preference": preferences}
+    context = {"Profile": profile, "Preference": preferences, "Category": available_cate,
+               "Profile_update_form": ProfileUpdateForm}
     return render(request, "newspaper_app/profile.html", context)
 
 # GET
 
 
 @login_required(login_url="newspaper_app:login_form")
+@require_http_methods(["GET"])
 def Profile_view(request):
     # ------------------Get the user-----------------------
     current_user = User.objects.get(pk=request.user.id)
@@ -47,13 +52,23 @@ def Profile_view(request):
 # PUT
 
 
-@login_required(login_url="newspaper_app:login_form")
+# @login_required(login_url="newspaper_app:login_form")
+@require_http_methods(["POST"])
+@csrf_exempt
 def Profile_put(request):
-    body = QueryDict(request.body)  # in order to parse the PUT body
     # ------------------Get the user-----------------------
     current_user = User.objects.get(pk=request.user.id)
     # ------------------Get the user's profile-----------------------
     profile_set = get_object_or_404(Profile, user=current_user)
+    profile_update_form = ProfileUpdateForm(
+        request.POST, request.FILES, instance=profile_set)
+    if(profile_update_form.is_valid()):
+        new_profile = profile_update_form.save(False)
+        profile_update_form.save_m2m()
+        new_profile.save()
+        return JsonResponse(ProfileSerializer(new_profile).data, safe=False)
+    else:
+        return JsonResponse({"Message": "False"})
 
 
 # -------------------------------Article/Home views-------------------------------------

@@ -27,7 +27,8 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_pic = models.ImageField(blank=True, null=True)
     pref_cate = models.ManyToManyField(Category)
-    dob = models.DateField(default=datetime.date.today, max_length=8)
+    dob = models.DateField(default=datetime.date.today,
+                           null=True, max_length=8)
     email = models.EmailField(max_length=254)
 
     def __str__(self):
