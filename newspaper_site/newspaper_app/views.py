@@ -238,7 +238,19 @@ def Comment_delete(request, comment_id):
 @csrf_exempt
 def register_validation(request):
     form = UserCreationForm(request.POST)
+    form.fields['username'].widget.attrs['class'] = "form-control"
+    form.fields['password1'].widget.attrs['class'] = "form-control"
+    form.fields['password2'].label = "Confirm Password:"
+    form.fields['password2'].widget.attrs['class'] = "form-control"
+
     registration_form = ProfileForm(request.POST, request.FILES)
+    registration_form.fields['profile_pic'].label = "Profile Picture:"
+    registration_form.fields['profile_pic'].widget.attrs['class'] = "btn upload"
+    registration_form.fields['email'].widget.attrs['class'] = "form-control"
+    registration_form.fields['dob'].label = "Date of Birth (YYYY-MM-DD)"
+    registration_form.fields['dob'].widget.attrs['class'] = "form-control"
+    registration_form.fields['pref_cate'].label = "Preferred Category(s):"
+
     context = {"form": form, "registration_form": registration_form}
     if(form.is_valid() and registration_form.is_valid()):
         context = {"message": True}
@@ -285,9 +297,21 @@ def login_validation(request):
 # user's profile register and login form
 @require_http_methods(["GET"])
 def register_view(request):
+
     form = UserCreationForm()
+    form.fields['username'].widget.attrs['class'] = "form-control"
+    form.fields['password1'].widget.attrs['class'] = "form-control"
+    form.fields['password2'].label = "Confirm Password:"
+    form.fields['password2'].widget.attrs['class'] = "form-control"
 
     registration_form = ProfileForm()
+    registration_form.fields['profile_pic'].label = "Profile Picture:"
+    registration_form.fields['profile_pic'].widget.attrs['class'] = "btn upload"
+    registration_form.fields['email'].widget.attrs['class'] = "form-control"
+    registration_form.fields['dob'].label = "Date of Birth (YYYY-MM-DD)"
+    registration_form.fields['dob'].widget.attrs['class'] = "form-control"
+    registration_form.fields['pref_cate'].label = "Preferred Category(s):"
+
     context = {"form": form, "registration_form": registration_form}
     return render(request, 'newspaper_app/register.html', context)
 

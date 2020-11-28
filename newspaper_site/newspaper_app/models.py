@@ -4,6 +4,11 @@ from django.utils import timezone
 import datetime
 # Create your models here.
 
+from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
+
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -26,6 +31,16 @@ class Article(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_pic = models.ImageField(blank=True, null=True)
+
+    def save(self):
+        resized_pic = Image.open(self.profile_pic)
+        output = BytesIO()
+        resized_pic = resized_pic.resize((200,200))
+        resized_pic.save(output, format='PNG', quality=100)
+        output.seek(0)
+        self.profile_pic = InMemoryUploadedFile(output,'ImageField', "%s.png" %self.profile_pic.name.split('.')[0], 'image/png', sys.getsizeof(output), None)
+        super(Profile,self).save()
+
     pref_cate = models.ManyToManyField(Category)
     dob = models.DateField(default=datetime.date.today,
                            null=True, max_length=8)

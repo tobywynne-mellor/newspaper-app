@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import *
 
-
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
@@ -25,7 +24,7 @@ class ProfileUpdateForm(forms.ModelForm):
         queryset=Category.objects.all(), widget=forms.CheckboxSelectMultiple, required=False)
     profile_pic = forms.ImageField(required=False)
     dob = forms.DateField(required=False)
-    email = forms.EmailField(required=False)
+    email = forms.EmailField(required=True)
 
     class Meta:
         model = Profile

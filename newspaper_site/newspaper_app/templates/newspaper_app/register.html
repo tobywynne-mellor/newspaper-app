@@ -16,16 +16,52 @@
 <div class="row justify-content-center">
     <div class="card w-50 mt-3">
 
-        <div class="card-body">
-            <form enctype="multipart/form-data" method="POST" action="{% url 'newspaper_app:register_validation' %}">
+        <div class="card-body pb-0">
+            <form class="form-override" enctype="multipart/form-data" method="POST" action="{% url 'newspaper_app:register_validation' %}">
                 {{form.as_p}}
                 {{registration_form.as_p}}
-                <input type="submit" value = "Register">
+                <input type="submit" value = "Register" class="btn btn-dark btn-submit">
             </form>
+        </div>
+
+        <div class="card-footer">
+            <div class="text-muted small text-center">Picture is optional. It's not Tinder.</div>
         </div>
         
     </div>
 </div>
 
 {% endautoescape %}
+
+<script>
+    $(".upload").wrap("<div class='btn btn-dark btn-submit fileUpload'>Browse</div>");
+    $(".fileUpload").after('<span class="upload-status small ml-2 badge badge-pill badge-custom p-2"></span>');
+
+    $(".upload").on("change", function() {
+        if ($(".upload").val() != '') {
+            var fileName = $(this).val().split("\\").pop();
+            $(".upload-status").html(fileName);
+            $(".upload-status").after('<span class="btn btn-sm cancel-upload"><i class="fas fa-times"></i></span>')
+        }
+    });
+
+    $(document).on('click', '.cancel-upload', function() {
+        $(".upload").val('');
+        $(".upload-status").html('');
+        $(".cancel-upload").remove();
+    }
+    );
+    
+    $("label[for='id_pref_cate_0']").addClass("customcheck badge badge-custom p-2 mb-1");
+    $("#id_pref_cate_0").addClass("checkbox");
+
+    $("label[for='id_pref_cate_1']").addClass("customcheck badge badge-custom p-2 mb-1");
+    $("#id_pref_cate_1").addClass("checkbox");
+
+    $("label[for='id_pref_cate_2']").addClass("customcheck badge badge-custom p-2 mb-1");
+    $("#id_pref_cate_2").addClass("checkbox");
+
+    $( ".checkbox" ).after('<span class="checkmark"></span>');
+</script>
+
 {% endblock %}
