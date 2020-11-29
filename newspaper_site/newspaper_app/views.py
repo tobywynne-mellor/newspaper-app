@@ -83,9 +83,15 @@ def Articles_view(request):
         # ------------------Get the user's profile-----------------------
         profile = get_object_or_404(Profile, user=current_user)
         # ------------------Get the profile's preference-----------------------
+        
         preferences = profile.pref_cate
         Articles = Article.objects.filter(
             category__in=preferences.values("id"))
+        
+        # If no filtered articles
+        if not Articles:
+            Articles = Article.objects.all()
+
         context = {"Articles": Articles}
         return render(request, "newspaper_app/index.html", context)
     else:
