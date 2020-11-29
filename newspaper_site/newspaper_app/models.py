@@ -37,7 +37,7 @@ class Profile(models.Model):
     dob = models.DateField(default=datetime.date.today, null=True, max_length=8)
     email = models.EmailField(max_length=254)
 
-    def save(self):
+    def save(self, *args, **kwargs):
         super(Profile,self).save()
         if self.profile_pic:
             resized_pic = Image.open(self.profile_pic)
