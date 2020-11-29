@@ -34,6 +34,8 @@
 {% endautoescape %}
 
 <script>
+    var file_status = false;
+
     $(".upload").wrap("<div class='btn btn-dark btn-submit fileUpload'>Browse</div>");
     $(".fileUpload").after('<span class="upload-status small ml-2 badge badge-pill badge-custom p-2"></span>');
 
@@ -41,7 +43,12 @@
         if ($(".upload").val() != '') {
             var fileName = $(this).val().split("\\").pop();
             $(".upload-status").html(fileName);
+            $(".cancel-upload").remove();
             $(".upload-status").after('<span class="btn btn-sm cancel-upload"><i class="fas fa-times"></i></span>')
+        }
+        if ($(".upload").val() == '') {
+            $(".upload-status").html('');
+            $(".cancel-upload").remove();
         }
     });
 

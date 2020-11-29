@@ -175,10 +175,10 @@ a:hover .card-title{
 
 .checkmark {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    height: 10px;
-    width: 10px;
+    top: 8.4px;
+    left: 8.4px;
+    height: 12px;
+    width: 12px;
     background-color: #fffafa;
     border-radius: 3px;
 }
@@ -203,9 +203,9 @@ a:hover .card-title{
 }
 
 .customcheck .checkmark:after {
-    left: 3px;
-    top: 0.5px;
-    width: 3px;
+    left: 4px;
+    top: 2px;
+    width: 4px;
     height: 8px;
     border: solid #1F3044;
     border-width: 0 3px 3px 0;

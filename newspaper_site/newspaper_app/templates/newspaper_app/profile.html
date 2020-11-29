@@ -22,8 +22,9 @@
                     {% if Profile.profile_pic %}
                         <img src={{Profile.profile_pic.url}} class="img-thumbnail img-custom w-50"/>
                     {% else %}
-                        <!-- NEED HELP HERE TO DISPLAY hello-kitty.jpg -->
-                    {% endif %}
+                        {% load static %}
+                        <img src="{% static 'images/hello-kitty.png' %}" class="img-thumbnail img-custom w-50"/>
+                    {% endif %}    
                 </div>
                 
                 <div class="row justify-content-center m-0 pb-2">
@@ -110,21 +111,7 @@
         </div>
     </div>
 </div>
-<!-- --------------------------Use this to test the update------------------------- -->
-<!-- <form enctype="multipart/form-data" action="{% url 'newspaper_app:profile_update' %}" method="post">
-    <input name="profile_pic" type="file" value={{Profile.profile_pic.url}}/>
-    <input type="email" name="email" value="{{Profile.email}}"/>
-    <input type="datetime" name="dob" value="{{Profile.dob}}"/>
-    <input type="checkbox" name="pref_cate" value="1"/>
-    <input type="checkbox" name="pref_cate" value="2"/>
-    <input type="checkbox" name="pref_cate" value="3"/>
-    <input type="checkbox" name="pref_cate" value="4"/>
-    <!-- {{Profile_update_form.as_p}} -->
-    <!-- <input type="submit" value="Send"/>
-</form> --> -->
 
-<!-- ---------------------------------Below is the django profile update form------------ -->
-<!-- {{Profile_update_form.as_p}} -->
 
 {% endautoescape %}
 {% endblock %}
