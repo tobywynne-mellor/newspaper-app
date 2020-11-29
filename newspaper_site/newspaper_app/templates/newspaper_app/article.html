@@ -43,6 +43,7 @@
       roundProfilePictures: true,
       enable_deleting_comment_with_replies: false,
       currentUserIsAdmin: "{{user.is_staff}}" == "True" ? true : false,
+      postCommentOnEnter: true,
       deleteComment: function(commentJSON, success, error) {
           $.ajax({
               type: 'DELETE',
