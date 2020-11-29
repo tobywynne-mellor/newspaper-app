@@ -21,7 +21,7 @@ class CommentTest(StaticLiveServerTestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.chrome = webdriver.Chrome(ChromeDriverManager().install())
-        cls.chrome.implicitly_wait(3)
+        cls.chrome.implicitly_wait(10)
 
     @classmethod
     def tearDownClass(cls):
