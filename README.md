@@ -17,6 +17,12 @@
 ./manage.py loaddata newspaper_data 
 ```
 
+
+```bash
+python manage.py dumpdata -e contenttypes > fixtures/newspaper_data.json
+python manage.py loaddata fixtures/newspaper_data.json
+```
+
 ## Run Development Server
 
 ```bash
