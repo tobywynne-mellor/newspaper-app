@@ -40,9 +40,11 @@
 
   $('#comments-container').comments({
       readOnly: "{{user.is_authenticated}}" === "True" ? false : true,
-      roundProfilePictures: true,
       enable_deleting_comment_with_replies: false,
       currentUserIsAdmin: "{{user.is_staff}}" == "True" ? true : false,
+      {% if profile.profile_pic.url %}
+      profilePictureURL: "{{profile.profile_pic.url}}",
+      {% endif %}
       postCommentOnEnter: true,
       deleteComment: function(commentJSON, success, error) {
           $.ajax({

@@ -114,7 +114,17 @@ def Article_view(request, id):
     # ---------------------Article's comments----------------------
     comments = Comment.objects.filter(
         article=get_object_or_404(Article, pk=id))
-    context = {"article": article, "likes": likes, "comments": comments}
+
+
+    if(request.user.is_authenticated):
+        # ------------------Get the user-----------------------
+        current_user = User.objects.get(pk=request.user.id)
+        # ------------------Get the user's profile-----------------------
+        profile = get_object_or_404(Profile, user=current_user)
+        
+        context = {"article": article, "likes": likes, "profile": profile}
+    else:
+        context = {"article": article, "likes": likes}
     return render(request, "newspaper_app/article.html", context)
 
 # -------------------------------Like views-------------------------------------
