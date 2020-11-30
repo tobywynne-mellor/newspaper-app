@@ -27,7 +27,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['.apps.okd.eecs.qmul.ac.uk', 'localhost', '127.0.0.1']
 
-ALLOWED_CIDR_NETS = ['192.168.1.0/24', '10.128.0.0/14']
+ALLOWED_CIDR_NETS = ['10.128.0.0/14']
 
 # Application definition
 
