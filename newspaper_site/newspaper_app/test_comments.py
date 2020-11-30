@@ -81,7 +81,7 @@ class CommentTest(StaticLiveServerTestCase):
     def test_delete_comment(self):
         comment = Comment.objects.create(
                     article=Article.objects.get(content="Test content"),
-                    user=Profile.objects.get(id=1),
+                    user=Profile.objects.get(user=User.objects.get(username="test_user")),
                     content="TEST COMMENT"
         )
         
