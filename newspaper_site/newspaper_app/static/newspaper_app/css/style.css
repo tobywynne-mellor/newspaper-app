@@ -237,3 +237,9 @@ a:hover .card-title{
 .fileUpload.btn.btn-dark.btn-submit {
     border-radius: 0px 10px 10px 0px !important;
 }
+
+img {
+    width: 200px !important;
+    height: 200px !important;
+    object-fit: cover !important;
+}
