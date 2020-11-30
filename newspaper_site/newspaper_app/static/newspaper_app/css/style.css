@@ -212,6 +212,10 @@ a:hover .card-title{
     transform: rotate(45deg);
 }
 
+.customcheck .checkmark.checkmark-fix:after {
+    top: 2px;
+}
+
 /* ################################ REGISTRATION PICTURE BUTTON OVERRIDES*/
 .fileUpload {
     position: relative;

@@ -18,20 +18,17 @@
         <div class="card-body">
 
             <div class="col p-0 bg-picture rounded pt-4 pb-4">
-                <div class="row justify-content-center m-0">
+                <div class="row justify-content-center m-0 pic-container">
                     {% if Profile.profile_pic %}
                         <img src={{Profile.profile_pic.url}} class="img-thumbnail img-custom w-50"/>
                     {% else %}
-                        {% load static %}
-                        <img src="{% static 'images/hello-kitty.png' %}" class="img-thumbnail img-custom w-50"/>
+                        <img src="/images/hello-kitty.png" class="img-thumbnail img-custom w-50"/>
                     {% endif %}    
                 </div>
-                
-                
             </div>
 
             <div class="row justify-content-center m-0">
-                    <button  title="Update Profile" class="btn btn-dark bg-pic-btn shadow-none mt-4 mb-4 p-0" data-toggle="modal" data-target="#inputModal">
+                    <button  title="Update Profile" class="nav-item btn btn-dark mt-0 shadow-none mt-0 mb-4 p-0" data-toggle="modal" data-target="#inputModal">
                         <i class="fas fa-pen-square fa-3x pl-1 pr-1"></i>
                     </button>
             </div>
@@ -48,7 +45,7 @@
                     </div>
 
                     <div class="col p-0">
-                        <h6 class="card-title">{{Profile.dob|date:"Y-m-d"}}</h6>
+                        <h6 class="card-title dob-refresh">{{Profile.dob|date:"Y-m-d"}}</h6>
                     </div>
                 </div>
                 <!-- #### -->
@@ -63,7 +60,7 @@
                     </div>
 
                     <div class="col p-0">
-                        <h6 class="card-title">{{Profile.email}}</h6>
+                        <h6 class="card-title email-refresh">{{Profile.email}}</h6>
                     </div>
                 </div>
                 <!-- #### -->
@@ -72,11 +69,11 @@
                     <div class="col p-0">
                         <div class="row m-0">
                             <div class="col p-0">
-                                <h4 class="card-title text-right">Interests (<span class="span-left">{{Preference.count}}</span>):&nbsp</h4>
+                                <h4 class="card-title text-right">Interests (<span class="span-left count-container">{{Preference.count}}</span>):&nbsp</h4>
                             </div>
                         </div>
                     </div>
-                    <div class="col p-0">
+                    <div class="col p-0 pref-container">
                         {% for pref in Preference.all %}
                             <div class="row m-0">
                                 <h6 class="badge badge-custom p-2">{{pref.name}}</h6>
@@ -85,7 +82,6 @@
                     </div>
                 </div>
                 <!-- #### -->
-
             </div>
         </div>
     </div>
@@ -101,8 +97,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body pb-5">
-                <form id="form_id" class="form-override" enctype="multipart/form-data">
+            <div class="modal-body pb-1">
+                <form id="form_id" class="form-override" form enctype="multipart/form-data" action="{% url 'newspaper_app:profile_update' %}" method="post">
 
                     <div class="p mb-2">
                         <label>Profile Picture:</label>
@@ -128,21 +124,21 @@
                             <li>
                                 <label class="customcheck badge badge-custom p-2 mb-1">
                                     <input type="checkbox" name="pref_cate" value="1" class="checkbox"/>
-                                    <span class="checkmark"></span>
+                                    <span class="checkmark checkmark-fix"></span>
                                     Computers and Technology
                                 </label>
                             </li>
                             <li>
                                 <label class="customcheck badge badge-custom p-2 mb-1">
                                     <input type="checkbox" name="pref_cate" value="2" class="checkbox"/>
-                                    <span class="checkmark"></span>
+                                    <span class="checkmark checkmark-fix"></span>
                                     Finance
                                 </label>
                             </li>
                             <li>
                                 <label class="customcheck badge badge-custom p-2 mb-1">
                                     <input type="checkbox" name="pref_cate" value="3" class="checkbox"/>
-                                    <span class="checkmark"></span>
+                                    <span class="checkmark checkmark-fix"></span>
                                     Book Reviews
                                 </label>
                             </li>
@@ -161,26 +157,19 @@
 {% endautoescape %}
 
 <script>
-    $(document).on('click', '.btn-profile-put', function() {
-        let profile_pic = $('#profile_pic')[0].files[0];
-        let dob = $("#dob").val();
-        let email = $("#email").val();
+    $(".btn-profile-put").bind("click",function() {$('#form_id').submit();}); 
 
-        // NEED HELP HERE
-        var pref_cate=[];
-         $.each($("input[name='pref_cate']:checked"), function(){            
-            pref_cate.push($(this).val());
-        });
-        
-        if (profile_pic == '') {profile_pic = "{{Profile.profile_pic.url}}";}
-        if (dob == '') {dob = "{{Profile.dob|date:'Y-m-d'}}";}
-        if (email == '') {email = "{{Profile.email}}";}
+    $('#form_id').on('submit', function(e) {
+        e.preventDefault();
 
-        var formData = new FormData();
-        formData.append('profile_pic', profile_pic);
-        formData.append('dob', dob);
-        formData.append('email', email);
-        formData.append('pref_cate', pref_cate);
+        if ($("#dob").val() == '') {
+            $("#dob").val("{{Profile.dob|date:'Y-m-d'}}");
+        }
+        if ($("#email").val() == '') {
+            $("#email").val("{{Profile.email}}");
+        }
+
+        var formData = new FormData(document.getElementById('form_id'));
 
         $.ajax({
             url: '/profile_update/',
@@ -190,13 +179,45 @@
             processData: false,
             success: function(response) {
                 console.log(response)
+                console.log(response.profile_pic)
+                console.log(response.pref_cate)
+
+                if (response.profile_pic) {
+                    $(".pic-container").empty();
+                    $(".pic-container").append('<img src="'+response.profile_pic+'"class="img-thumbnail img-custom w-50"/>');
+                }
+                $(".dob-refresh").html(response.dob);
+                $(".email-refresh").html(response.email);
+
+                var count_badges = 0;
+                if (response.pref_cate && response.pref_cate.length) {
+                    $(".pref-container").empty();
+                    for (var i = 0; i < response.pref_cate.length; i++) {
+                        if (response.pref_cate[i] == 1) {
+                            $(".pref-container").append('<div class="row m-0"><h6 class="badge badge-custom p-2">Computers and Technology</h6></div>');
+                            count_badges++;
+                        }
+                        if (response.pref_cate[i] == 2) {
+                            $(".pref-container").append('<div class="row m-0"><h6 class="badge badge-custom p-2">Finance</h6></div>');
+                            count_badges++;
+                        }
+                        if (response.pref_cate[i] == 3) {
+                            $(".pref-container").append('<div class="row m-0"><h6 class="badge badge-custom p-2">Book Reviews</h6></div>');
+                            count_badges++;
+                        }
+                    }
+                }
+                $(".count-container").html(count_badges);
+                $('#profile_pic').val('')
+                $('#form_id')[0].reset();
+                $("#dob").attr("placeholder", response.dob);
+                $("#email").attr("placeholder", response.email);
             },
             error: function(response) {
                 console.log("ERROR")
             },
         });
-    }
-    );
+    });
 
 </script>
 
