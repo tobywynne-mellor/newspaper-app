@@ -17,7 +17,7 @@
     <div class="card w-50 mt-3">
         <div class="card-body">
 
-            <div class="col p-0 bg-picture rounded pt-4">
+            <div class="col p-0 bg-picture rounded pt-4 pb-4">
                 <div class="row justify-content-center m-0">
                     {% if Profile.profile_pic %}
                         <img src={{Profile.profile_pic.url}} class="img-thumbnail img-custom w-50"/>
@@ -27,29 +27,20 @@
                     {% endif %}    
                 </div>
                 
-                <div class="row justify-content-center m-0 pb-2">
-                    <div class="btn-group mt-2" role="group">
-                        <button title="Change" class="btn btn-dark bg-pic-btn">
-                            <i class="fas fa-pen-square fa-sm"></i>
-                        </button>
-                        <button title="Delete" class="btn btn-dark bg-pic-btn">
-                            <i class="fas fa-trash fa-sm"></i>
-                        </button>
-                    </div>
-                </div>
+                
+            </div>
+
+            <div class="row justify-content-center m-0">
+                    <button  title="Update Profile" class="btn btn-dark bg-pic-btn shadow-none mt-4 mb-4 p-0" data-toggle="modal" data-target="#inputModal">
+                        <i class="fas fa-pen-square fa-3x pl-1 pr-1"></i>
+                    </button>
             </div>
             
-            <div class="col p-0 mt-5">
+            <div class="col p-0">
 
                 <div class="row m-0">
                     <div class="col p-0">
                         <div class="row m-0">
-                            <div class="col-2 p-0">
-                                <button title="Change" class="btn btn-sm btn-dark bg-pic-btn shadow-none" data-toggle="modal" data-target="#inputModal">
-                                    <i class="fas fa-pen-square fa-sm"></i>
-                                </button>
-                            </div>
-
                             <div class="col p-0">
                                 <h4 class="card-title text-right">Date of birth:&nbsp</h4>
                             </div>
@@ -57,7 +48,7 @@
                     </div>
 
                     <div class="col p-0">
-                        <h6 class="card-title">{{Profile.dob}}</h6>
+                        <h6 class="card-title">{{Profile.dob|date:"Y-m-d"}}</h6>
                     </div>
                 </div>
                 <!-- #### -->
@@ -65,12 +56,6 @@
                 <div class="row m-0">
                     <div class="col p-0">
                         <div class="row m-0">
-                            <div class="col-2 p-0">
-                                <button title="Change" class="btn btn-sm btn-dark bg-pic-btn shadow-none" data-toggle="modal" data-target="#inputModal">
-                                    <i class="fas fa-pen-square fa-sm"></i>
-                                </button>
-                            </div>
-
                             <div class="col p-0">
                                 <h4 class="card-title text-right">Email:&nbsp</h4>
                             </div>
@@ -86,12 +71,6 @@
                 <div class="row m-0">
                     <div class="col p-0">
                         <div class="row m-0">
-                            <div class="col-2 p-0">
-                                <button title="Change" class="btn btn-sm btn-dark bg-pic-btn shadow-none" data-toggle="modal" data-target="#inputModal">
-                                    <i class="fas fa-pen-square fa-sm"></i>
-                                </button>
-                            </div>
-
                             <div class="col p-0">
                                 <h4 class="card-title text-right">Interests (<span class="span-left">{{Preference.count}}</span>):&nbsp</h4>
                             </div>
@@ -117,17 +96,63 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="inputModalLongTitle">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title h2" id="inputModalLongTitle">Update Profile:</h5>
+                <button type="button" class="close btn-clear" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                ...
+            <div class="modal-body pb-5">
+                <form id="form_id" class="form-override" enctype="multipart/form-data">
+
+                    <div class="p mb-2">
+                        <label>Profile Picture:</label>
+                        <div class="btn btn-dark btn-submit fileUpload">Browse
+                            <input id="profile_pic" type="file" name="profile_pic" class="btn upload">
+                        </div>
+                        <span class="upload-status small ml-2 badge badge-pill badge-custom p-2"></span>
+                    </div>
+                        
+                    <div class="p mb-2 mt-3">
+                        <label>Date of Birth (YYYY-MM-DD):</label>
+                        <input id="dob" class="form-control" type="datetime" name="dob" placeholder="{{Profile.dob|date:'Y-m-d'}}"/>
+                    </div>
+
+                    <div class="p mb-2 mt-3">
+                        <label>Email:</label>
+                        <input id="email" class="form-control" type="email" name="email" placeholder="{{Profile.email}}"/>
+                    </div>
+
+                    <div class="p mb-2 mt-3">
+                        <label>Preferred Category(s):</label>
+                        <ul>
+                            <li>
+                                <label class="customcheck badge badge-custom p-2 mb-1">
+                                    <input type="checkbox" name="pref_cate" value="1" class="checkbox"/>
+                                    <span class="checkmark"></span>
+                                    Computers and Technology
+                                </label>
+                            </li>
+                            <li>
+                                <label class="customcheck badge badge-custom p-2 mb-1">
+                                    <input type="checkbox" name="pref_cate" value="2" class="checkbox"/>
+                                    <span class="checkmark"></span>
+                                    Finance
+                                </label>
+                            </li>
+                            <li>
+                                <label class="customcheck badge badge-custom p-2 mb-1">
+                                    <input type="checkbox" name="pref_cate" value="3" class="checkbox"/>
+                                    <span class="checkmark"></span>
+                                    Book Reviews
+                                </label>
+                            </li>
+                        </ul>
+                    </div> 
+                </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+            <div class="modal-footer pt-0 mt-0">
+                <button type="button" class="nav-item btn btn-dark mt-0 shadow-none" data-dismiss="modal">Close</button>
+                <button type="button" class="nav-item btn btn-dark mt-0 shadow-none btn-profile-put" data-dismiss="modal">Save</button>
             </div>
         </div>
     </div>
@@ -136,6 +161,42 @@
 {% endautoescape %}
 
 <script>
+    $(document).on('click', '.btn-profile-put', function() {
+        let profile_pic = $('#profile_pic')[0].files[0];
+        let dob = $("#dob").val();
+        let email = $("#email").val();
+
+        // NEED HELP HERE
+        var pref_cate=[];
+         $.each($("input[name='pref_cate']:checked"), function(){            
+            pref_cate.push($(this).val());
+        });
+        
+        if (profile_pic == '') {profile_pic = "{{Profile.profile_pic.url}}";}
+        if (dob == '') {dob = "{{Profile.dob|date:'Y-m-d'}}";}
+        if (email == '') {email = "{{Profile.email}}";}
+
+        var formData = new FormData();
+        formData.append('profile_pic', profile_pic);
+        formData.append('dob', dob);
+        formData.append('email', email);
+        formData.append('pref_cate', pref_cate);
+
+        $.ajax({
+            url: '/profile_update/',
+            data: formData,
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                console.log(response)
+            },
+            error: function(response) {
+                console.log("ERROR")
+            },
+        });
+    }
+    );
 
 </script>
 

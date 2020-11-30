@@ -106,7 +106,7 @@ a:hover .card-title{
 }
 
 /* ################################ LOGIN AND REGISTER OVERRIDES*/
-.form-override>p>label {
+.form-override>p>label, .modal-title, .p>label {
     font-family: 'Bebas Neue', cursive;
     color: #1F3044 !important;
 }
