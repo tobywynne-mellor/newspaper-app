@@ -25,8 +25,9 @@ SECRET_KEY = '*c&&c=_g@2s9f@03q*@g99yk%c6d*ei@37-@&4uce!i1dy0_-q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.apps.okd.eecs.qmul.ac.uk']
+ALLOWED_HOSTS = ['.apps.okd.eecs.qmul.ac.uk', 'localhost', '127.0.0.1']
 
+ALLOWED_CIDR_NETS = ['192.168.1.0/24', '10.128.0.0/14']
 
 # Application definition
 
@@ -42,13 +43,14 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'allow_cidr.middleware.AllowCIDRMiddleware',
-    #'django.middleware.security.SecurityMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'newspaper_site.urls'
@@ -134,4 +136,3 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 
 
-ALLOWED_CIDR_NETS = ['192.168.1.0/24']
