@@ -41,13 +41,15 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
+    #'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allow_cidr.middleware.AllowCIDRMiddleware',
 ]
 
 ROOT_URLCONF = 'newspaper_site.urls'
@@ -122,7 +124,7 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/images/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # ------------------------------HOST EMAIL SETUP------------------------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -131,3 +133,6 @@ EMAIL_HOST_USER = 'bestfakenews3010@gmail.com'
 EMAIL_HOST_PASSWORD = "fakenews1234"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
+
+ALLOWED_HOSTS=['.apps.okd.eecs.qmul.ac.uk']
+ALLOWED_CIDR_NETS = ['10.128.0.0/14']
