@@ -212,6 +212,10 @@ a:hover .card-title{
     transform: rotate(45deg);
 }
 
+.customcheck .checkmark.checkmark-fix:after {
+    top: 2px;
+}
+
 /* ################################ REGISTRATION PICTURE BUTTON OVERRIDES*/
 .fileUpload {
     position: relative;
@@ -232,4 +236,28 @@ a:hover .card-title{
 
 .fileUpload.btn.btn-dark.btn-submit {
     border-radius: 0px 10px 10px 0px !important;
+}
+
+.like-container {
+  padding: 0 1em 0.8em;
+  color: #1F3044;
+}
+
+.like-container .fas {
+  color: #FB9039;
+}
+
+.like-container i {
+  font-size: 28px;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+img {
+    width: 200px !important;
+    height: 200px !important;
+    object-fit: cover !important;
+}
+
+.modal-lg {
+    width: 40% !important;
 }
