@@ -50,7 +50,6 @@
           // if not liked (far) -> send post req & toggle fas & far
           const data = {"user_id": {{user.id}}, "article_id": {{article.id}}}
           $.post("/like_post/", data, function(data){
-              console.log(data);
               heart.data("likeid", data.id);
               toggleClasses();
             }); 
@@ -61,7 +60,6 @@
                 url: "/like_delete/"+ heart.data("likeid") + "/",
                 type: "DELETE",
                 success: function(data){
-                    console.log(data)
                     toggleClasses();
                 }
               });
