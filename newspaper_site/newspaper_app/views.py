@@ -134,7 +134,9 @@ def Article_view(request, id):
         # ------------------Get the user's profile-----------------------
         profile = get_object_or_404(Profile, user=current_user)
 
-        context = {"article": article, "likes": likes, "profile": profile}
+        like = Like.objects.filter(article=article.id, user=profile).first() 
+
+        context = {"article": article, "likes": likes, "profile": profile, "like":like}
     else:
         context = {"article": article, "likes": likes}
     return render(request, "newspaper_app/article.html", context)
@@ -158,12 +160,12 @@ def Like_view(request, article_id):
 @csrf_exempt
 @login_required(login_url="newspaper_app:login_form")
 def Like_post(request):
-    like_user = get_object_or_404(Profile, pk=int(request.POST['user_id']))
+    like_user = get_object_or_404(Profile, user=User.objects.get(id=int(request.POST['user_id'])))
     like_article = get_object_or_404(
         Article, pk=int(request.POST['article_id']))
     like = Like.objects.create(user=like_user, article=like_article)
     like = LikeSerializer(like, many=False)
-    return HttpResponse(status=200)
+    return JsonResponse(like.data,status=200)
 
 # DELETE
 # Required Formdata : {"like_id"}

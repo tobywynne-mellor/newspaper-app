@@ -31,11 +31,47 @@
     {{ article.content|safe }}
     </p>
   </div>
+  {% if user.is_authenticated %}
+    <div class="like-container">
+      <i class="{% if like %}fas{% else %}far{% endif %} fa-heart" data-likeid="{{like.id}}"></i>
+      {% comment %}<span>{{likes.count}} like{% if likes.count != 1%}s{% endif%}</span>{% endcomment %}
+    </div>
+  {% endif %}
 </div>
 {% endautoescape %}
 <div id="comments-container"></div>
 
 <script>
+  const heart = $('.fa-heart');
+  //const likecount = {{likes.count}};
+
+  heart.click(function(e) {
+      if (heart.hasClass('far')) {
+          // if not liked (far) -> send post req & toggle fas & far
+          const data = {"user_id": {{user.id}}, "article_id": {{article.id}}}
+          $.post("/like_post/", data, function(data){
+              console.log(data);
+              heart.data("likeid", data.id);
+              toggleClasses();
+            }); 
+        
+        } else if (heart.hasClass('fas')) {
+            // has class fas -> send delete req
+            $.ajax({
+                url: "/like_delete/"+ heart.data("likeid") + "/",
+                type: "DELETE",
+                success: function(data){
+                    console.log(data)
+                    toggleClasses();
+                }
+              });
+          } 
+
+      function toggleClasses() {
+          heart.toggleClass('fas');
+          heart.toggleClass('far');
+    }
+  })
 
 
   $('#comments-container').comments({
