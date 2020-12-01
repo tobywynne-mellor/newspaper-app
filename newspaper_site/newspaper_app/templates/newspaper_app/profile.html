@@ -20,9 +20,9 @@
             <div class="col p-0 bg-picture rounded pt-4 pb-4">
                 <div class="row justify-content-center m-0 pic-container">
                     {% if Profile.profile_pic %}
-                        <img src={{Profile.profile_pic.url}} class="img-thumbnail img-custom w-50"/>
+                        <img src={{Profile.profile_pic.url}} class="img-thumbnail img-custom"/>
                     {% else %}
-                        <img src="/images/hello-kitty.png" class="img-thumbnail img-custom w-50"/>
+                        <img src="/images/hello-kitty.png" class="img-thumbnail img-custom"/>
                     {% endif %}    
                 </div>
             </div>
@@ -89,11 +89,11 @@
 
 
 <div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title h2" id="inputModalLongTitle">Update Profile:</h5>
-                <button type="button" class="close btn-clear" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close btn-clear btn-dismiss" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -147,7 +147,7 @@
                 </form>
             </div>
             <div class="modal-footer pt-0 mt-0">
-                <button type="button" class="nav-item btn btn-dark mt-0 shadow-none" data-dismiss="modal">Close</button>
+                <button type="button" class="nav-item btn btn-dark mt-0 shadow-none btn-dismiss" data-dismiss="modal">Close</button>
                 <button type="button" class="nav-item btn btn-dark mt-0 shadow-none btn-profile-put" data-dismiss="modal">Save</button>
             </div>
         </div>
@@ -157,6 +157,11 @@
 {% endautoescape %}
 
 <script>
+    $('.btn-dismiss').on('click', function() {
+        $('#profile_pic').val('')
+        $('#form_id')[0].reset();
+    });
+
     $(".btn-profile-put").bind("click",function() {$('#form_id').submit();}); 
 
     $('#form_id').on('submit', function(e) {
@@ -178,13 +183,9 @@
             contentType: false,
             processData: false,
             success: function(response) {
-                console.log(response)
-                console.log(response.profile_pic)
-                console.log(response.pref_cate)
-
                 if (response.profile_pic) {
                     $(".pic-container").empty();
-                    $(".pic-container").append('<img src="'+response.profile_pic+'"class="img-thumbnail img-custom w-50"/>');
+                    $(".pic-container").append('<img src="'+response.profile_pic+'"class="img-thumbnail img-custom"/>');
                 }
                 $(".dob-refresh").html(response.dob);
                 $(".email-refresh").html(response.email);
@@ -218,7 +219,6 @@
             },
         });
     });
-
 </script>
 
 {% endblock %}

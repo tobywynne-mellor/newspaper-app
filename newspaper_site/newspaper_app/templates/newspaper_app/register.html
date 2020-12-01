@@ -34,31 +34,9 @@
 {% endautoescape %}
 
 <script>
-    var file_status = false;
-
     $(".upload").wrap("<div class='btn btn-dark btn-submit fileUpload'>Browse</div>");
     $(".fileUpload").after('<span class="upload-status small ml-2 badge badge-pill badge-custom p-2"></span>');
 
-    $(".upload").on("change", function() {
-        if ($(".upload").val() != '') {
-            var fileName = $(this).val().split("\\").pop();
-            $(".upload-status").html(fileName);
-            $(".cancel-upload").remove();
-            $(".upload-status").after('<span class="btn btn-sm cancel-upload"><i class="fas fa-times"></i></span>')
-        }
-        if ($(".upload").val() == '') {
-            $(".upload-status").html('');
-            $(".cancel-upload").remove();
-        }
-    });
-
-    $(document).on('click', '.cancel-upload', function() {
-        $(".upload").val('');
-        $(".upload-status").html('');
-        $(".cancel-upload").remove();
-    }
-    );
-    
     $("label[for='id_pref_cate_0']").addClass("customcheck badge badge-custom p-2 mb-1");
     $("#id_pref_cate_0").addClass("checkbox");
 

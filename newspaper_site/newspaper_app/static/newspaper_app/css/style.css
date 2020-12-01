@@ -238,8 +238,14 @@ a:hover .card-title{
     border-radius: 0px 10px 10px 0px !important;
 }
 
+/* ################################ LAST CHANGES*/
+
 img {
     width: 200px !important;
     height: 200px !important;
     object-fit: cover !important;
+}
+
+.modal-lg {
+    width: 40% !important;
 }
