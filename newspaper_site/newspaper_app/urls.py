@@ -7,6 +7,8 @@ urlpatterns = [
     path("profile/", views.Profile_initial_render, name="profile"),
     path("profile_view/", views.Profile_view, name="profile_view"),
     path("profile_update/", views.Profile_put, name="profile_update"),
+    path("profile_image_delete/", views.profile_image_delete,
+         name="profile_image_delete"),
     path("article/<int:id>/", views.Article_view, name="article"),
     path("like_view/<int:article_id>/", views.Like_view, name="like_view"),
     path("like_delete/<int:like_id>/", views.Like_delete, name="like_delete"),
@@ -24,6 +26,6 @@ urlpatterns = [
 
     path('login_validation/', views.login_validation, name="login_validation"),
     path('login/', views.login_view, name="login_form"),
-    
+
     path('logout/', views.logout_view, name="logout")
 ]

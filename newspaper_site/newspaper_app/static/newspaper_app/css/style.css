@@ -251,3 +251,9 @@ a:hover .card-title{
   font-size: 20px;
   transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
+
+img {
+    width: 200px !important;
+    height: 200px !important;
+    object-fit: cover !important;
+}
