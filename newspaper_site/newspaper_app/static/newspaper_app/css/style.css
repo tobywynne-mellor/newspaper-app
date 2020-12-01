@@ -257,3 +257,7 @@ img {
     height: 200px !important;
     object-fit: cover !important;
 }
+
+.modal-lg {
+    width: 40% !important;
+}
