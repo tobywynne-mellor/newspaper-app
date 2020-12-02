@@ -15,8 +15,6 @@
 {% autoescape on %}
 
 <!-- hidden div to pass picture url to jQuery -->
-<div class="pic-check invisible">{% if profile.profile_pic %}{{profile.profile_pic.url}}{% else %}/images/hello-kitty.png{% endif %}</div>
-
 <div class="card mt-3">
   <div class="card-body">
     <p class="badge badge-custom p-2"> 
@@ -80,10 +78,11 @@
       readOnly: "{{user.is_authenticated}}" === "True" ? false : true,
       enable_deleting_comment_with_replies: false,
       currentUserIsAdmin: "{{user.is_staff}}" == "True" ? true : false,
-
-      //loads innerHTML content of hidden div
-      profilePictureURL: $(".pic-check").html(),
-
+      {% if profile and profile.profile_pic.url %}
+            profilePictureURL: "{{profile.profile_pic.url}}",
+      {% else %}
+            profilePictureURL: "/images/hello-kitty.png",
+      {% endif %}
       postCommentOnEnter: true,
       deleteComment: function(commentJSON, success, error) {
           $.ajax({
