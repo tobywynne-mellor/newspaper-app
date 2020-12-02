@@ -25,6 +25,7 @@
 
 <body>
     <div class="container pb-3 min-vh-100">
+        <!-- context based navigation -->
         <nav class="nav d-flex">
             <a class="nav-item btn btn-dark mr-1" href="{% url 'newspaper_app:index' %}">Home</a>
             {% if user.is_authenticated %} 
@@ -35,6 +36,7 @@
             {% endif %}
         </nav>
 
+        <!-- context based header -->
         <div class="row justify-content-center">
             <div class="col-3 p-1 disabled"></div>
             <div class="text-center">
@@ -51,6 +53,7 @@
         {% block content %}
         {% endblock %}
     </div>
+    <!-- it's necessary to load this here to avoid code duplication on register and profile -->
     <script src="{% static 'newspaper_app/js/file-upload.js' %}"></script>
 </body>
 </html>

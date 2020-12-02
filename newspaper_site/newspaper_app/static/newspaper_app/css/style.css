@@ -90,7 +90,6 @@ a:hover .card-title{
 /* ################################ PROFILE OVERRIDES*/
 .img-custom {
     background-color: #FB9039 !important;
-    border: 1px solid #1F3044 !important;
 }
 
 .bg-picture {
@@ -238,6 +237,7 @@ a:hover .card-title{
     border-radius: 0px 10px 10px 0px !important;
 }
 
+/* LIKES STYLING */
 .like-container {
   padding: 0 1em 0.8em;
   color: #1F3044;
@@ -252,6 +252,7 @@ a:hover .card-title{
   transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
+/* LATEST STYLING */
 img {
     width: 200px !important;
     height: 200px !important;
@@ -260,4 +261,17 @@ img {
 
 .modal-lg {
     width: 40% !important;
+}
+
+.del {
+    border-radius: 0px 10px 10px 0px;
+    background: inherit !important;
+}
+
+.fa-trash {
+    color: #FB9039;
+}
+
+.fa-heart:hover {
+    cursor:pointer;
 }

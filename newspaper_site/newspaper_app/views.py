@@ -75,6 +75,8 @@ def Profile_put(request):
         return JsonResponse({"Message": "False"})
 
 
+@require_http_methods(["DELETE"])
+@csrf_exempt
 def profile_image_delete(request):
     # ------------------Get the user-----------------------
     current_user = User.objects.get(pk=request.user.id)
@@ -83,6 +85,7 @@ def profile_image_delete(request):
     # ------------------Delete image-------------------
     profile_set.profile_pic.delete(save=True)
 
+    return JsonResponse({"status": "success"})
 
 # -------------------------------Article/Home views-------------------------------------
 
