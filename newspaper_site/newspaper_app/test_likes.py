@@ -22,7 +22,7 @@ from .models import *
 # c1. check likes not visible when logged out ...DONE!
 # c2. check likes visible when logged in ...DONE!
 
-class CommentTest(StaticLiveServerTestCase):
+class LikesTest(StaticLiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):
