@@ -10,7 +10,8 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import LiveServerTestCase
 from django.urls import reverse
-from django.core.management import call_command
+from django.core import management
+from django.test.utils import override_settings
 import time
 
 from .models import User, Profile, Category, Article, Like, Comment
@@ -22,6 +23,7 @@ class CommentTest(StaticLiveServerTestCase):
         super().setUpClass()
         cls.chrome = webdriver.Chrome(ChromeDriverManager().install())
         cls.chrome.implicitly_wait(10)
+        print("--Test Comments--")
 
     @classmethod
     def tearDownClass(cls):
@@ -29,9 +31,11 @@ class CommentTest(StaticLiveServerTestCase):
         super().tearDownClass()
 
     def setUp(self):
+        management.call_command('flush', verbosity=0, interactive=False)
         self._load_test_data() 
 
     # the comment input should not display when logged out
+    @override_settings(DEBUG=True)
     def test_not_able_to_comment_when_logged_out(self):
         self._navigate_to_home()
         self._click_first_article()
@@ -39,6 +43,7 @@ class CommentTest(StaticLiveServerTestCase):
         comment_input_visible = self._is_visible_by_css_selector(comment_input_selector)
         assert comment_input_visible is False
 
+    @override_settings(DEBUG=True)
     def test_post_comment(self):
         # login
         self._login()
@@ -78,6 +83,7 @@ class CommentTest(StaticLiveServerTestCase):
         comment_object.delete()
 
 
+    @override_settings(DEBUG=True)
     def test_delete_comment(self):
         comment = Comment.objects.create(
                     article=Article.objects.get(content="Test content"),
@@ -88,6 +94,7 @@ class CommentTest(StaticLiveServerTestCase):
         assert comment is not None
 
         self._login()
+        self._navigate_to_home()
         self._click_first_article()
 
         # check a comment is present
@@ -117,8 +124,10 @@ class CommentTest(StaticLiveServerTestCase):
         assert comment_in_list is not None 
 
         # check database that it does not exist
-        comment_object = Comment.objects.filter(content="TEST")
+        time.sleep(2)
+        comment_object = Comment.objects.filter(pk=1)
         assert comment_object.exists() is False 
+
 
     def _navigate_to_home(self):
         self.chrome.get(self.live_server_url)
@@ -171,14 +180,17 @@ class CommentTest(StaticLiveServerTestCase):
         )
 
     def _login(self):
-        self.chrome.get(self.live_server_url+"/login/")
+        try:
+            self.chrome.get(self.live_server_url+"/login/")
 
-        user_field = self.chrome.find_element_by_name("username")
-        password_field = self.chrome.find_element_by_name("password")
+            user_field = self.chrome.find_element_by_name("username")
+            password_field = self.chrome.find_element_by_name("password")
 
-        user_field.send_keys("test_user")
-        password_field.send_keys("secret_password")
-        login_button = self.chrome.find_element_by_css_selector("input[type='submit']")
-        login_button.click()
+            user_field.send_keys("test_user")
+            password_field.send_keys("secret_password")
+            login_button = self.chrome.find_element_by_css_selector("input[type='submit']")
+            login_button.click()
+        except NoSuchElementException as e:
+            pass
 
 

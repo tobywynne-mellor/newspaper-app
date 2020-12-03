@@ -15,7 +15,7 @@
 
 <div class="row justify-content-center">
     <div class="card w-50 mt-3">
-
+        <!-- django forms are used -->
         <div class="card-body pb-0">
             <form class="form-override" enctype="multipart/form-data" method="POST" action="{% url 'newspaper_app:register_validation' %}">
                 {{form.as_p}}
@@ -34,9 +34,11 @@
 {% endautoescape %}
 
 <script>
+    //create parent container for upload button for overriding styling
     $(".upload").wrap("<div class='btn btn-dark btn-submit fileUpload'>Browse</div>");
     $(".fileUpload").after('<span class="upload-status small ml-2 badge badge-pill badge-custom p-2"></span>');
 
+    //classes created to override default checkbox look
     $("label[for='id_pref_cate_0']").addClass("customcheck badge badge-custom p-2 mb-1");
     $("#id_pref_cate_0").addClass("checkbox");
 

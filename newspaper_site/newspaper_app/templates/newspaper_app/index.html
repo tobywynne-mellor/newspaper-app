@@ -14,6 +14,7 @@
 {% block content %}
 {% autoescape on %}
 {% for article in Articles %}
+<!-- show articles in iteration as clickable links -->
 <a class="card stretched-link mt-3 text-decoration-none" data-article_id="{{article.id}}" href="{% url 'newspaper_app:article' article.id %}">
   <div class="card-body">
     <p class="badge badge-custom p-2"> 
