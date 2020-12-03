@@ -216,7 +216,12 @@ a:hover .card-title{
 }
 
 /* ################################ REGISTRATION PICTURE BUTTON OVERRIDES*/
-.upload {
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin-left: 10px;
+}
+.fileUpload input.upload {
     position: absolute;
     top: 0;
     right: 0;
@@ -228,10 +233,7 @@ a:hover .card-title{
     filter: alpha(opacity=0);
 }
 
-.fileUpload {
-    position: relative;
-    overflow: hidden;
-    margin-left: 10px;
+.btn.btn-dark.btn-submit.fileUpload {
     border-radius: 0px 10px 10px 0px !important;
 }
 
