@@ -10,7 +10,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import LiveServerTestCase
 from django.urls import reverse
-from django.core.management import call_command
+from django.core import management
 from django.test.utils import override_settings
 import time
 
@@ -23,6 +23,7 @@ class CommentTest(StaticLiveServerTestCase):
         super().setUpClass()
         cls.chrome = webdriver.Chrome(ChromeDriverManager().install())
         cls.chrome.implicitly_wait(10)
+        print("--Test Comments--")
 
     @classmethod
     def tearDownClass(cls):
@@ -30,6 +31,7 @@ class CommentTest(StaticLiveServerTestCase):
         super().tearDownClass()
 
     def setUp(self):
+        management.call_command('flush', verbosity=0, interactive=False)
         self._load_test_data() 
 
     # the comment input should not display when logged out
@@ -122,8 +124,10 @@ class CommentTest(StaticLiveServerTestCase):
         assert comment_in_list is not None 
 
         # check database that it does not exist
-        comment_object = Comment.objects.filter(content="TEST")
+        time.sleep(2)
+        comment_object = Comment.objects.filter(pk=1)
         assert comment_object.exists() is False 
+
 
     def _navigate_to_home(self):
         self.chrome.get(self.live_server_url)
