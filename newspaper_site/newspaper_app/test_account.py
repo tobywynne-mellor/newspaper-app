@@ -10,7 +10,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import LiveServerTestCase
 from django.urls import reverse
-from django.core.management import call_command
+from django.core import management 
 import time
 from .models import *
 import urllib.request
@@ -24,10 +24,10 @@ class UserCreationTest(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-
         cls.chrome = webdriver.Chrome(
             ChromeDriverManager().install())
         cls.chrome.implicitly_wait(10)
+        print("--Test Account--")
 
     @classmethod
     def tearDownClass(cls):
@@ -35,12 +35,12 @@ class UserCreationTest(StaticLiveServerTestCase):
         super().tearDownClass()
 
     def setUp(self):
+        management.call_command('flush', verbosity=0, interactive=False)
         self._load_test_data()
     # Test methods
 
     def test_logIn(self):
         # Go to login page
-        # TODO
         self.chrome.get(self.live_server_url+"/login/")
 
         # Input username and password
@@ -48,13 +48,10 @@ class UserCreationTest(StaticLiveServerTestCase):
         user_field = self.chrome.find_element_by_name("username")
         password_field = self.chrome.find_element_by_name("password")
         user_field.send_keys("test_user1")
-        time.sleep(0.5)
         password_field.send_keys("secret_password1")
-        time.sleep(0.5)
         login_button = self.chrome.find_element_by_css_selector(
             "input[type='submit']")
         login_button.click()
-        time.sleep(1)
         # Check if is in login_validation url
         current_url = self.chrome.current_url
         self.is_url(self.live_server_url +
@@ -64,32 +61,24 @@ class UserCreationTest(StaticLiveServerTestCase):
         user_field = self.chrome.find_element_by_name("username")
         password_field = self.chrome.find_element_by_name("password")
         user_field.clear()
-        time.sleep(0.5)
         password_field.clear()
-        time.sleep(0.5)
 
         # Success login
         user_field = self.chrome.find_element_by_name("username")
         password_field = self.chrome.find_element_by_name("password")
         user_field.send_keys("test_user")
-        time.sleep(0.5)
         password_field.send_keys("secret_password")
-        time.sleep(0.5)
         login_button = self.chrome.find_element_by_css_selector(
             "input[type='submit']")
         login_button.click()
-        time.sleep(2)
         # Check if is in login_validation url
         current_url = self.chrome.current_url
         self.is_url(self.live_server_url + "/")
 
     def test_sucess_register(self):
         # Go to Registration page
-        # TODO
         self.chrome.get(self.live_server_url+"/register/")
-        time.sleep(0.5)
         # -------------------Input and submit value-----------------------
-        # TODO
         username_field = self.chrome.find_element_by_name("username")
         password_field = self.chrome.find_element_by_name("password1")
         password2_field = self.chrome.find_element_by_name("password2")
@@ -109,21 +98,16 @@ class UserCreationTest(StaticLiveServerTestCase):
             category.click()
         profile_pic_field.send_keys(
             os.path.abspath("newspaper_app/static/newspaper_app/image_test/doggo.png"))
-        time.sleep(2)
         login_button = self.chrome.find_element_by_css_selector(
             "input[type='submit']")
         login_button.click()
-        time.sleep(3)
         current_url = self.chrome.current_url
         self.is_url(self.live_server_url + "/profile/")
 
     def test_fail_register(self):
         # Go to Registration page
-        # TODO
         self.chrome.get(self.live_server_url+"/register/")
-        time.sleep(0.5)
         # -------------------Input missing username-----------------------
-        # TODO
         username_field = self.chrome.find_element_by_name("username")
         password_field = self.chrome.find_element_by_name("password1")
         password2_field = self.chrome.find_element_by_name("password2")
@@ -134,12 +118,10 @@ class UserCreationTest(StaticLiveServerTestCase):
 
         password_field.send_keys("Duy12345")
         password2_field.send_keys("Duy12345")
-        time.sleep(2)
 
         login_button = self.chrome.find_element_by_css_selector(
             "input[type='submit']")
         login_button.click()
-        time.sleep(3)
         current_url = self.chrome.current_url
         self.is_url(self.live_server_url +
                     "/register/")
@@ -148,12 +130,10 @@ class UserCreationTest(StaticLiveServerTestCase):
         # email_field.send_keys("yuddayama@gmail.com")
         dob_field.clear()
         dob_field.send_keys("1944-10-10")
-        time.sleep(2)
 
         login_button = self.chrome.find_element_by_css_selector(
             "input[type='submit']")
         login_button.click()
-        time.sleep(3)
         current_url = self.chrome.current_url
         self.is_url(self.live_server_url +
                     "/register/")
@@ -161,23 +141,19 @@ class UserCreationTest(StaticLiveServerTestCase):
         # -------------------Input missing dob-----------------------
         email_field.send_keys("yuddayama@gmail.com")
         dob_field.clear()
-        time.sleep(2)
 
         login_button = self.chrome.find_element_by_css_selector(
             "input[type='submit']")
         login_button.click()
-        time.sleep(3)
         current_url = self.chrome.current_url
         self.is_url(self.live_server_url +
                     "/register/")
         # -------------------Input missing profile_pic and preferences-----------------------
         dob_field.send_keys("1944-10-10")
-        time.sleep(2)
 
         login_button = self.chrome.find_element_by_css_selector(
             "input[type='submit']")
         login_button.click()
-        time.sleep(3)
         current_url = self.chrome.current_url
         self.is_url(self.live_server_url +
                     "/profile/")

@@ -10,10 +10,11 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import LiveServerTestCase
 from django.urls import reverse
-from django.core.management import call_command
+from django.core import management
 from django.test.utils import override_settings
 import time
 from .models import *
+import django.core.management.commands
 
 # a1. like article ...DONE!
 # a2. check like exists in database ...DONE!
@@ -29,6 +30,7 @@ class LikesTest(StaticLiveServerTestCase):
         super().setUpClass()
         cls.chrome = webdriver.Chrome(ChromeDriverManager().install())
         cls.chrome.implicitly_wait(5)
+        print("--Test Likes--")
 
     @classmethod
     def tearDownClass(cls):
@@ -36,6 +38,7 @@ class LikesTest(StaticLiveServerTestCase):
         super().tearDownClass()
 
     def setUp(self):
+        management.call_command('flush', verbosity=0, interactive=False)
         self._load_test_data()
     
 
@@ -55,48 +58,39 @@ class LikesTest(StaticLiveServerTestCase):
 
     @override_settings(DEBUG=True)
     def test_like_logged_in(self):
-        time.sleep(0.5)
         self.chrome.get(self.live_server_url)
 
-        time.sleep(0.5)
         self.chrome.get(self.live_server_url+"/login/")
         self.chrome.find_element_by_name("username").send_keys("doge")
         self.chrome.find_element_by_name("password").send_keys("hackerman")
         self.chrome.find_element_by_css_selector("input[type='submit']").click()
 
-        time.sleep(0.5)
         self.chrome.get(self.live_server_url)
 
         # article_obj_id below used for database check later
-        time.sleep(0.5)
         article_obj_id = self.chrome.find_element_by_css_selector(".card").get_attribute('data-article_id')
         self.chrome.find_element_by_css_selector(".card").click()
         
-
         # c2. check likes visible when logged in
-        time.sleep(0.5)
         assert self.chrome.find_element_by_css_selector(".far.fa-heart") is not None
 
         # a1. like article
-        time.sleep(0.5)
         self.chrome.find_element_by_css_selector(".far.fa-heart").click()
         # check if fa icon changed to liked version
         assert self.chrome.find_element_by_css_selector(".fas.fa-heart") is not None
         # a2. check like exists in database
-        assert Like.objects.get(article_id=article_obj_id, user_id=1) is not None
+        time.sleep(1)
+        like_object = Like.objects.filter(article_id=article_obj_id, user_id=1)
+        assert like_object.exists() is True
 
         # b1. unlike article
-        time.sleep(0.5)
         self.chrome.find_element_by_css_selector(".fas.fa-heart").click()
         # check if fa icon changed to unliked version
         assert self.chrome.find_element_by_css_selector(".far.fa-heart") is not None
         # b2. check like removed from database
-        try:
-            like_object = Like.objects.get(article_id=article_obj_id, user_id=1)
-            removed_status = False
-        except Like.DoesNotExist:
-            removed_status = True
-        assert removed_status is True
+        time.sleep(1)
+        like_object = Like.objects.filter(article_id=article_obj_id, user_id=1)
+        assert like_object.exists() is False 
 
 
     def _assert_url_equals(self, url):

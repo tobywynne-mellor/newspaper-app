@@ -297,7 +297,6 @@ def register_validation(request):
         profile.save()
         registration_form.save_m2m()
         # ---------------------------------------Welcome email view-----------------------------
-        print(profile.email)
         send_mail(
             'Welcome to FakeNews',
             'Only the truth for you.',
