@@ -76,7 +76,7 @@
 
   $('#comments-container').comments({
       readOnly: "{{user.is_authenticated}}" === "True" ? false : true,
-      enable_deleting_comment_with_replies: false,
+      enableDeletingCommentWithReplies: true,
       currentUserIsAdmin: "{{user.is_staff}}" == "True" ? true : false,
       {% if profile and profile.profile_pic.url %}
             profilePictureURL: "{{profile.profile_pic.url}}",
