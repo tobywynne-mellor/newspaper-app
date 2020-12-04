@@ -64,6 +64,6 @@ python manage.py loaddata fixtures/newspaper_data.json
 ## Run Development Server
 
 ```bash
-    ./manage.py runserver
+./manage.py runserver
 ```
 
