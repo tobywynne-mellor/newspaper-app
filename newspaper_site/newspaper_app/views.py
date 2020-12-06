@@ -179,7 +179,7 @@ def Like_post(request):
 @csrf_exempt
 @login_required(login_url="newspaper_app:login_form")
 def Like_delete(request, like_id):
-    like = get_object_or_404(Like, pk=like_id)
+    like = get_object_or_404(Like, id=like_id)
     like.delete()
     return JsonResponse({'message': 'Like: {} was deleted successfully.'.format(like_id)}, status=204)
 
@@ -240,6 +240,7 @@ def Comment_post(request):
 
 
 @require_http_methods(["PUT"])
+@login_required(login_url="newspaper_app:login_form")
 @csrf_exempt
 @login_required(login_url="newspaper_app:login_form")
 def Comment_put(request):
@@ -256,10 +257,10 @@ def Comment_put(request):
 
 
 @require_http_methods(["DELETE"])
-@csrf_exempt
 @login_required(login_url="newspaper_app:login_form")
+@csrf_exempt
 def Comment_delete(request, comment_id):
-    comment = get_object_or_404(Comment, pk=comment_id)
+    comment = get_object_or_404(Comment, id=comment_id)
     comment.delete()
     return JsonResponse({'message': 'Comment: {} was deleted successfully.'.format(comment_id)}, status=204)
 
