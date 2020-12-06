@@ -36,6 +36,7 @@ password: tobytoby
     - Home template CSS 
     - Register Template + CSS + JS 
     - Login Template + CSS
+    - Article Template + CSS
     - Profile Template, CSS + AJAX
     - Like Selenium Test
 
@@ -56,6 +57,7 @@ password: tobytoby
 ./manage.py loaddata newspaper_data 
 ```
 
+## Save/Load Fixtures
 ```bash
 python manage.py dumpdata -e contenttypes > fixtures/newspaper_data.json
 python manage.py loaddata fixtures/newspaper_data.json
@@ -64,6 +66,11 @@ python manage.py loaddata fixtures/newspaper_data.json
 ## Run Development Server
 
 ```bash
-    ./manage.py runserver
+./manage.py runserver
 ```
 
+## Run Tests
+
+```bash
+    ./manage.py test 
+```
