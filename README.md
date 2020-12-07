@@ -47,6 +47,11 @@ password: tobytoby
     - Like HTML, CSS, AJAX & view functions (DELETE)
     - Comment Selenium test
     - Deployment
+    
+## Install dependencies
+```bash
+pip install -r newspaper_app/requirements.txt
+```
 
 ## Populate Database
 
@@ -72,5 +77,5 @@ python manage.py loaddata fixtures/newspaper_data.json
 ## Run Tests
 
 ```bash
-    ./manage.py test 
+./manage.py test 
 ```

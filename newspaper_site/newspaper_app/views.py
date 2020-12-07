@@ -160,8 +160,8 @@ def Like_view(request, article_id):
 # Post
 # Required Formdata: {"user_id","article_id"}
 @require_http_methods(["POST"])
-@csrf_exempt
 @login_required(login_url="newspaper_app:login_form")
+@csrf_exempt
 def Like_post(request):
     like_user = get_object_or_404(Profile, user=User.objects.get(id=int(request.POST['user_id'])))
     like_article = get_object_or_404(
@@ -176,24 +176,24 @@ def Like_post(request):
 
 
 @require_http_methods(["DELETE"])
-@csrf_exempt
 @login_required(login_url="newspaper_app:login_form")
+@csrf_exempt
 def Like_delete(request, like_id):
     current_user = User.objects.get(pk=request.user.id)
     profile = get_object_or_404(Profile, user=current_user)
 
     if request.user.is_superuser:
-        like = get_object_or_404(Like, id=like_id)
+        like = get_object_or_404(Like, pk=like_id)
         like.delete()
     else:
         try:
-            like = Like.objects.get(id=like_id)
+            like = Like.objects.get(pk=like_id)
             if like.user != profile:
-                raise Exception("User is not allowed to delete this like")
+                return HttpResponse("User is not allowed to delete this like", status=403)
             else:
                 like.delete()
-        except Exception as ex:
-            return HttpResponse(repr(ex), status=403)
+        except Like.DoesNotExist as ex:
+            return HttpResponse(repr(ex), status=404)
 
     return JsonResponse({'message': 'Like: {} was deleted successfully.'.format(like_id)}, status=204)
 
@@ -256,7 +256,6 @@ def Comment_post(request):
 @require_http_methods(["PUT"])
 @login_required(login_url="newspaper_app:login_form")
 @csrf_exempt
-@login_required(login_url="newspaper_app:login_form")
 def Comment_put(request):
     body = QueryDict(request.body)  # in order to parse the PUT body
     comment_id = int(body.get('comment_id'))
@@ -282,13 +281,13 @@ def Comment_delete(request, comment_id):
         comment.delete()
     else:
         try:
-            comment = Comment.objects.get(id=comment_id)
+            comment = Comment.objects.get(pk=comment_id)
             if comment.user != profile:
-                raise Exception("User is not allowed to delete this comment")
+                return HttpResponse("User is not allowed to delete this comment", status=403)
             else:
                 comment.delete()
-        except Exception as ex:
-            return HttpResponse(repr(ex), status=403)
+        except Comment.DoesNotExist as ex:
+            return HttpResponse(repr(ex), status=404)
 
     return JsonResponse({'message': 'Comment: {} was deleted successfully.'.format(comment_id)}, status=204)
 
