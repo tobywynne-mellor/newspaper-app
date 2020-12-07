@@ -179,8 +179,22 @@ def Like_post(request):
 @csrf_exempt
 @login_required(login_url="newspaper_app:login_form")
 def Like_delete(request, like_id):
-    like = get_object_or_404(Like, id=like_id)
-    like.delete()
+    current_user = User.objects.get(pk=request.user.id)
+    profile = get_object_or_404(Profile, user=current_user)
+
+    if request.user.is_superuser:
+        like = get_object_or_404(Like, id=like_id)
+        like.delete()
+    else:
+        try:
+            like = Like.objects.get(id=like_id)
+            if like.user != profile:
+                raise Exception("User is not allowed to delete this like")
+            else:
+                like.delete()
+        except Exception as ex:
+            return HttpResponse(repr(ex), status=403)
+
     return JsonResponse({'message': 'Like: {} was deleted successfully.'.format(like_id)}, status=204)
 
 
@@ -260,8 +274,22 @@ def Comment_put(request):
 @login_required(login_url="newspaper_app:login_form")
 @csrf_exempt
 def Comment_delete(request, comment_id):
-    comment = get_object_or_404(Comment, id=comment_id)
-    comment.delete()
+    current_user = User.objects.get(pk=request.user.id)
+    profile = get_object_or_404(Profile, user=current_user)
+
+    if request.user.is_superuser:
+        comment = get_object_or_404(Comment, pk=comment_id)
+        comment.delete()
+    else:
+        try:
+            comment = Comment.objects.get(id=comment_id)
+            if comment.user != profile:
+                raise Exception("User is not allowed to delete this comment")
+            else:
+                comment.delete()
+        except Exception as ex:
+            return HttpResponse(repr(ex), status=403)
+
     return JsonResponse({'message': 'Comment: {} was deleted successfully.'.format(comment_id)}, status=204)
 
 # -----------------------------user's profile registration and login-----------------------
